@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 
 // Import Test interface from the API route
 interface Test {
@@ -27,6 +27,8 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   const [currentPairIndex, setCurrentPairIndex] = useState(0);
   const [judgements, setJudgements] = useState<UserTestJudgement[]>([]);
   const [currentJudgement, setCurrentJudgement] = useState<number>(0);
+  const [isInteracting, setIsInteracting] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate all combinations of test pairs and randomize order
   const testPairs = useMemo(() => {
@@ -66,8 +68,29 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
     setCurrentJudgement(value);
   };
 
+  const handleSliderMouseDown = () => {
+    setIsInteracting(true);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const handleSliderMouseUp = () => {
+    setIsInteracting(false);
+    // Auto-advance after a short delay to ensure the user has finished adjusting
+    timeoutRef.current = setTimeout(() => {
+      handleNext();
+    }, 300);
+  };
+
   const handleNext = () => {
     if (!currentPair) return;
+
+    // Clear any pending timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
 
     const newJudgement: UserTestJudgement = {
       testAid: currentPair[0].id,
@@ -87,6 +110,15 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
       setCurrentJudgement(0);
     }
   };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   const getSliderLabel = (value: number): string => {
     switch (value) {
@@ -162,9 +194,13 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
                 type="range"
                 min="-1"
                 max="1"
-                step="0.5"
+                step="0.1"
                 value={currentJudgement}
                 onChange={(e) => handleSliderChange(parseFloat(e.target.value))}
+                onMouseDown={handleSliderMouseDown}
+                onMouseUp={handleSliderMouseUp}
+                onTouchStart={handleSliderMouseDown}
+                onTouchEnd={handleSliderMouseUp}
                 className="w-full h-3 bg-royal-heath-200 rounded-lg appearance-none cursor-pointer slider"
                 style={{
                   background: `linear-gradient(to right, 
@@ -204,10 +240,10 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
             </p>
           </div>
 
-          {/* Next button */}
+          {/* Next button - now optional since auto-advance is enabled */}
           <button
             onClick={handleNext}
-            className="px-8 py-3 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors font-semibold text-lg"
+            className="px-8 py-3 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors font-semibold text-lg opacity-75"
           >
             {isLastPair ? 'Complete' : 'Next Comparison'}
           </button>
