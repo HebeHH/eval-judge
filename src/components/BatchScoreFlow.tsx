@@ -154,62 +154,64 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8" style={{ background: 'linear-gradient(135deg, #fefefe 0%, #f8f8f6 100%)' }}>
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
-          <div className="flex justify-between items-center mb-3">
-            <h1 className="text-lg font-medium text-royal-heath-900">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <div className="flex justify-between items-center mb-4">
+            <h1 className="text-2xl font-semibold" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
               Evaluating: {selectedPrompt.criteria}
             </h1>
             <button
               onClick={onBack}
-              className="px-3 py-2 bg-royal-heath-100 text-royal-heath-700 border border-royal-heath-300 rounded-md hover:bg-royal-heath-200 transition-colors text-sm"
+              className="px-4 py-2 bg-amber-100 border border-amber-300 rounded-md hover:bg-amber-200 transition-all duration-200 font-medium"
+              style={{ fontFamily: 'var(--font-playfair)', color: '#8b4513' }}
             >
-              Back to Prompt Builder
+              Return to Prompt Builder
             </button>
           </div>
-          <p className="text-royal-heath-600 text-sm">
-            Testing with {testSample.length} sample outputs using: {selectedPrompt.title}
+          <p className="leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
+            Testing with {testSample.length} sample outputs using the <em>{selectedPrompt.title}</em> approach
           </p>
         </div>
 
         {/* Progress Bar */}
-        <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
-          <div className="flex justify-between items-center mb-2">
-            <h2 className="text-base font-medium text-royal-heath-800">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
               AI Batch Scoring Progress
             </h2>
-            <span className="text-royal-heath-600 text-sm">
+            <span className="font-medium" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
               {progress.current} / {progress.total} completed
             </span>
           </div>
           
-          <div className="w-full bg-royal-heath-200 rounded-full h-3">
+          <div className="w-full bg-amber-200 rounded-full h-4 border border-amber-300">
             <div
-              className="bg-royal-heath-600 h-3 rounded-full transition-all duration-300 flex items-center justify-center"
+              className="h-4 rounded-full transition-all duration-300 flex items-center justify-center"
               style={{ 
+                backgroundColor: '#8b4513',
                 width: progress.total > 0 ? `${(progress.current / progress.total) * 100}%` : '0%' 
               }}
             >
               {progress.total > 0 && (
-                <span className="text-white text-xs font-medium">
+                <span className="text-white text-xs font-medium" style={{ fontFamily: 'var(--font-playfair)' }}>
                   {Math.round((progress.current / progress.total) * 100)}%
                 </span>
               )}
             </div>
           </div>
           
-          <div className="mt-2 text-sm text-royal-heath-600">
+          <div className="mt-4" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
             {isProcessing ? (
-              <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-royal-heath-600"></div>
-                <span>Processing test outputs with AI evaluation...</span>
+              <div className="flex items-center space-x-3">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2" style={{ borderColor: '#8b4513' }}></div>
+                <span>Processing test outputs with scholarly precision...</span>
               </div>
             ) : isBatchScoreComplete ? (
-              <span className="text-green-600 font-medium">Batch scoring completed</span>
+              <span className="font-medium" style={{ color: '#2d5016' }}>Batch scoring completed with literary rigor</span>
             ) : (
-              <span>Preparing to start batch scoring...</span>
+              <span>Preparing to commence evaluation...</span>
             )}
           </div>
         </div>
@@ -221,42 +223,48 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
             criteria={selectedPrompt.criteria}
             onComplete={handleUserJudgeComplete}
             isOpen={isUserJudgeOpen}
-            className="mb-4"
+            className="mb-6"
           />
         )}
 
         {/* Status Information */}
-        <div className="bg-white rounded-lg shadow-sm border p-4">
-          <h3 className="text-base font-medium text-royal-heath-800 mb-3">Status</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="bg-royal-heath-50 rounded-md p-3">
-              <h4 className="font-medium text-royal-heath-700 mb-1 text-sm">AI Batch Scoring</h4>
-              <p className="text-sm text-royal-heath-600">
+        <div className="bg-white rounded-lg border border-gray-200 p-6" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <h3 className="text-xl font-semibold mb-4" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
+            Evaluation Status
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-amber-50 rounded-md p-4 border border-amber-100">
+              <h4 className="font-semibold mb-2" style={{ fontFamily: 'var(--font-playfair)', color: '#8b4513' }}>
+                AI Batch Scoring
+              </h4>
+              <p style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a', lineHeight: '1.6' }}>
                 {isBatchScoreComplete ? 
-                  `Completed - ${batchScoreResults.length} results` : 
+                  `Completed with scholarly precision — ${batchScoreResults.length} results analyzed` : 
                   isProcessing ? 
-                    `Processing... (${progress.current}/${progress.total})` : 
-                    'Preparing to start...'
+                    `Processing with literary attention... (${progress.current}/${progress.total})` : 
+                    'Preparing to commence evaluation...'
                 }
               </p>
             </div>
-            <div className="bg-royal-heath-50 rounded-md p-3">
-              <h4 className="font-medium text-royal-heath-700 mb-1 text-sm">Human Judgements</h4>
-              <p className="text-sm text-royal-heath-600">
+            <div className="bg-amber-50 rounded-md p-4 border border-amber-100">
+              <h4 className="font-semibold mb-2" style={{ fontFamily: 'var(--font-playfair)', color: '#8b4513' }}>
+                Human Judgements
+              </h4>
+              <p style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a', lineHeight: '1.6' }}>
                 {isUserJudgeComplete ? 
-                  `Completed - ${userTestJudgements.length} comparisons` : 
+                  `Completed with discerning insight — ${userTestJudgements.length} comparisons made` : 
                   isUserJudgeOpen ? 
-                    'Waiting for user input...' : 
-                    'Closed'
+                    'Awaiting your considered judgement...' : 
+                    'Assessment concluded'
                 }
               </p>
             </div>
           </div>
           
           {isBatchScoreComplete && (isUserJudgeComplete || !isUserJudgeOpen) && (
-            <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
-              <p className="text-green-800 font-medium text-sm">
-                Evaluation complete. Preparing results...
+            <div className="mt-4 p-4 rounded-md border" style={{ backgroundColor: '#f0f8e8', borderColor: '#c3d9b0' }}>
+              <p className="font-medium" style={{ fontFamily: 'var(--font-playfair)', color: '#2d5016' }}>
+                Evaluation complete. Preparing comprehensive analysis...
               </p>
             </div>
           )}

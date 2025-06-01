@@ -135,47 +135,50 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   const progress = ((currentPairIndex + 1) / testPairs.length) * 100;
 
   return (
-    <div className={`w-full bg-white rounded-lg shadow-sm border overflow-hidden ${className}`}>
+    <div className={`w-full bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`} style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
       {/* Header */}
-      <div className="bg-royal-heath-600 text-white p-4">
-        <h2 className="text-lg font-medium text-center mb-2">
+      <div className="text-white p-6" style={{ backgroundColor: '#8b4513' }}>
+        <h2 className="text-xl font-semibold text-center mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>
           Which output is more {criteria}?
         </h2>
-        <div className="flex justify-between items-center text-royal-heath-100 text-sm">
+        <div className="flex justify-between items-center opacity-90 mb-3" style={{ fontFamily: 'var(--font-crimson)' }}>
           <span>Comparison {currentPairIndex + 1} of {testPairs.length}</span>
           <span>{Math.round(progress)}% complete</span>
         </div>
         {/* Progress bar */}
-        <div className="mt-2 bg-royal-heath-700 rounded-full h-1">
+        <div className="bg-amber-200 rounded-full h-2 border border-amber-300">
           <div 
-            className="bg-royal-heath-200 h-1 rounded-full transition-all duration-300"
-            style={{ width: `${progress}%` }}
+            className="h-2 rounded-full transition-all duration-300"
+            style={{ 
+              backgroundColor: '#d2691e',
+              width: `${progress}%` 
+            }}
           />
         </div>
       </div>
 
       {/* Test comparison cards */}
-      <div className="p-6">
-        <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="p-8">
+        <div className="grid grid-cols-2 gap-8 mb-8">
           {/* Test A */}
-          <div className="bg-royal-heath-50 rounded-md p-4 border border-royal-heath-200 flex flex-col">
-            <div className="bg-royal-heath-600 text-white text-center py-1 px-3 rounded-md mb-3 font-medium text-sm">
-              A
+          <div className="bg-amber-50 rounded-md p-6 border border-amber-200 flex flex-col">
+            <div className="text-white text-center py-2 px-4 rounded-md mb-4 font-semibold" style={{ backgroundColor: '#8b4513', fontFamily: 'var(--font-playfair)' }}>
+              Option A
             </div>
-            <div className="flex-1 min-h-[180px] overflow-y-auto">
-              <p className="text-royal-heath-800 leading-relaxed text-sm">
+            <div className="flex-1 min-h-[200px] overflow-y-auto">
+              <p className="leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#2c1810', textAlign: 'justify' }}>
                 {currentPair[0].text}
               </p>
             </div>
           </div>
 
           {/* Test B */}
-          <div className="bg-royal-heath-50 rounded-md p-4 border border-royal-heath-200 flex flex-col">
-            <div className="bg-royal-heath-600 text-white text-center py-1 px-3 rounded-md mb-3 font-medium text-sm">
-              B
+          <div className="bg-amber-50 rounded-md p-6 border border-amber-200 flex flex-col">
+            <div className="text-white text-center py-2 px-4 rounded-md mb-4 font-semibold" style={{ backgroundColor: '#8b4513', fontFamily: 'var(--font-playfair)' }}>
+              Option B
             </div>
-            <div className="flex-1 min-h-[180px] overflow-y-auto">
-              <p className="text-royal-heath-800 leading-relaxed text-sm">
+            <div className="flex-1 min-h-[200px] overflow-y-auto">
+              <p className="leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#2c1810', textAlign: 'justify' }}>
                 {currentPair[1].text}
               </p>
             </div>
@@ -183,7 +186,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
         </div>
 
         {/* Slider section */}
-        <div className="flex flex-col items-center space-y-4">
+        <div className="flex flex-col items-center space-y-6">
           <div className="w-full max-w-4xl">
             {/* Slider */}
             <div className="relative">
@@ -198,32 +201,32 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
                 onMouseUp={handleSliderMouseUp}
                 onTouchStart={handleSliderMouseDown}
                 onTouchEnd={handleSliderMouseUp}
-                className="w-full h-2 bg-royal-heath-200 rounded-md appearance-none cursor-pointer slider"
+                className="w-full h-3 bg-amber-200 rounded-md appearance-none cursor-pointer slider border border-amber-300"
                 style={{
                   background: `linear-gradient(to right, 
-                    #475569 0%, 
-                    #64748b 25%, 
-                    #94a3b8 50%, 
-                    #64748b 75%, 
-                    #475569 100%)`
+                    #8b4513 0%, 
+                    #a0522d 25%, 
+                    #d2691e 50%, 
+                    #a0522d 75%, 
+                    #8b4513 100%)`
                 }}
               />
               
               {/* Slider labels */}
-              <div className="flex justify-between mt-2 px-1">
-                <span className="text-xs text-royal-heath-700 text-center w-16">
+              <div className="flex justify-between mt-4 px-2">
+                <span className="text-sm text-center w-20" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
                   A much more {criteria}
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-12">
+                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
                   A more {criteria}
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-16">
+                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
                   Equal
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-12">
+                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
                   B more {criteria}
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-16">
+                <span className="text-sm text-center w-20" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
                   B much more {criteria}
                 </span>
               </div>
@@ -232,7 +235,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
 
           {/* Current selection display */}
           <div className="text-center">
-            <p className="text-sm font-medium text-royal-heath-800">
+            <p className="text-lg font-medium" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
               {getSliderLabel(currentJudgement)}
             </p>
           </div>
@@ -240,9 +243,16 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
           {/* Next button - now optional since auto-advance is enabled */}
           <button
             onClick={handleNext}
-            className="px-6 py-2 bg-royal-heath-600 text-white rounded-md hover:bg-royal-heath-700 transition-colors font-medium text-sm opacity-75"
+            className="px-8 py-3 text-white rounded-md transition-all duration-200 font-medium opacity-75 hover:opacity-100"
+            style={{ 
+              backgroundColor: '#8b4513',
+              fontFamily: 'var(--font-playfair)',
+              boxShadow: '0 2px 8px rgba(139, 69, 19, 0.3)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#a0522d'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#8b4513'}
           >
-            {isLastPair ? 'Complete' : 'Next Comparison'}
+            {isLastPair ? 'Complete Assessment' : 'Next Comparison'}
           </button>
         </div>
       </div>

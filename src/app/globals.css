@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fefefe;
+  --foreground: #1a1a1a;
+  --accent: #8b4513;
+  --muted: #6b6b6b;
+  --border: #e5e5e5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-serif: var(--font-crimson);
+  --font-display: var(--font-playfair);
   
   --color-royal-heath-50: #f8fafc;
   --color-royal-heath-100: #f1f5f9;
@@ -21,22 +25,89 @@
   --color-royal-heath-800: #1e293b;
   --color-royal-heath-900: #0f172a;
   --color-royal-heath-950: #020617;
-
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1a1a;
+    --foreground: #f5f5f5;
+    --accent: #d2691e;
+    --muted: #a0a0a0;
+    --border: #333333;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: var(--font-crimson), "Times New Roman", "Georgia", serif;
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Typography hierarchy inspired by Penguin Classics */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), "Times New Roman", "Georgia", serif;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75em;
+  color: var(--foreground);
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 0.625rem;
+}
+
+p {
+  margin-bottom: 1.25em;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Elegant button styling */
+button {
+  font-family: var(--font-playfair), serif;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+}
+
+/* Form elements with classic styling */
+input, textarea, select {
+  font-family: var(--font-crimson), serif;
+  font-size: 16px;
+  line-height: 1.6;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.1);
 }
 
 /* Custom slider styles for UserJudge component */
@@ -45,24 +116,89 @@ body {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: #475569;
+  background: var(--accent);
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: #a0522d;
+  transform: scale(1.1);
 }
 
 .slider::-moz-range-thumb {
   height: 20px;
   width: 20px;
   border-radius: 50%;
-  background: #475569;
+  background: var(--accent);
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
   border: none;
+  transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  background: #a0522d;
+  transform: scale(1.1);
 }
 
 .slider::-moz-range-track {
   background: transparent;
   border: none;
+}
+
+/* Classic literary styling for code blocks */
+pre, code {
+  font-family: "Courier New", "Monaco", monospace;
+  background: #f8f8f8;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.25em 0.5em;
+  font-size: 0.9em;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+/* Elegant blockquote styling */
+blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1.5em;
+  margin: 1.5em 0;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.1em;
+  line-height: 1.8;
+}
+
+/* Classic table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+  font-family: var(--font-crimson), serif;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.75em 1em;
+  text-align: left;
+}
+
+th {
+  background: #f8f8f8;
+  font-weight: 600;
+  font-family: var(--font-playfair), serif;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(139, 69, 19, 0.2);
+  color: var(--foreground);
 }
