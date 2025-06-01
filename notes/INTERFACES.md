@@ -405,3 +405,239 @@ const mockSelectedPrompt: SelectedEvaluationPrompt = {
 
 handlePromptSelection(mockSelectedPrompt);
 ```
+
+## UserJudge Component Integration
+
+### Overview
+The UserJudge component provides an embeddable user interface for comparing pairs of test outputs and collecting human judgements. It presents all possible combinations of test pairs in randomized order and collects comparative ratings on a 5-point scale. The component can be placed within any layout alongside other elements like API progress bars.
+
+### Component Interface
+```typescript
+interface UserJudgeProps {
+  tests: Test[];                                    // Array of test cases to compare
+  criteria: string;                                 // Evaluation criteria (e.g., "witty", "intelligent")
+  onComplete: (judgements: UserTestJudgement[]) => void; // Callback when judging is complete
+  isOpen: boolean;                                  // Controls component visibility
+  className?: string;                               // Optional custom CSS classes
+}
+
+interface Test {
+  id: number;
+  text: string;
+}
+
+export interface UserTestJudgement {
+  testAid: number;    // ID of first test in comparison
+  testBid: number;    // ID of second test in comparison  
+  judgement: number;  // Rating: -1, -0.5, 0, 0.5, 1
+}
+```
+
+### Judgement Scale
+The component uses a 5-point comparative scale:
+- **-1**: Test A is significantly more aligned with criteria
+- **-0.5**: Test A is somewhat more aligned with criteria
+- **0**: Tests are reasonably equal
+- **0.5**: Test B is somewhat more aligned with criteria
+- **1**: Test B is significantly more aligned with criteria
+
+### Usage Example
+```typescript
+import UserJudge, { UserTestJudgement } from '@/components/UserJudge';
+
+function MyComponent() {
+  const [isJudgeOpen, setIsJudgeOpen] = useState(false);
+  const [judgements, setJudgements] = useState<UserTestJudgement[]>([]);
+  
+  const tests = [
+    { id: 1, text: "First response to evaluate" },
+    { id: 2, text: "Second response to evaluate" },
+    { id: 3, text: "Third response to evaluate" }
+  ];
+
+  const handleJudgeComplete = (results: UserTestJudgement[]) => {
+    setJudgements(results);
+    setIsJudgeOpen(false);
+    
+    // Process results - for 3 tests, you'll get 3 comparisons:
+    // [1 vs 2], [1 vs 3], [2 vs 3]
+    console.log('User judgements:', results);
+  };
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Left column - UserJudge */}
+      <div>
+        <h3>Human Evaluation</h3>
+        <UserJudge
+          tests={tests}
+          criteria="witty"
+          onComplete={handleJudgeComplete}
+          isOpen={isJudgeOpen}
+          className="h-fit"
+        />
+      </div>
+      
+      {/* Right column - Other content */}
+      <div>
+        <h3>AI Evaluation Progress</h3>
+        <div className="bg-white p-6 rounded-lg">
+          {/* API progress bar or other content */}
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### Component Behavior
+1. **Pair Generation**: Creates all unique combinations (not permutations) of test pairs
+2. **Randomization**: Shuffles the order of comparisons to reduce bias
+3. **Progressive Interface**: Shows one comparison at a time with progress tracking
+4. **Embeddable Design**: Fits within any layout without taking over the screen
+5. **Responsive Layout**: Adapts to container size with mobile-friendly design
+6. **State Management**: Handles component lifecycle and data collection
+7. **Completion Handling**: Returns all judgements when user finishes or component closes
+
+### Layout Features
+- **Compact Design**: Optimized for embedding within larger interfaces
+- **Responsive Cards**: Test comparison cards stack on mobile, side-by-side on larger screens
+- **Fixed Height Content**: Test text areas have max height with scrolling for long content
+- **Custom Styling**: Accepts `className` prop for integration with parent layouts
+
+### Integration Patterns
+
+#### Pattern 1: Side-by-Side with API Progress
+```typescript
+// Show human evaluation alongside AI evaluation progress
+function EvaluationInterface() {
+  const [isHumanEvalOpen, setIsHumanEvalOpen] = useState(false);
+  const [apiProgress, setApiProgress] = useState(0);
+  
+  return (
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+      <div>
+        <h3>Human Evaluation</h3>
+        <UserJudge
+          tests={tests}
+          criteria={criteria}
+          onComplete={handleHumanComplete}
+          isOpen={isHumanEvalOpen}
+        />
+      </div>
+      
+      <div>
+        <h3>AI Evaluation</h3>
+        <APIProgressBar progress={apiProgress} />
+        <TestDataDisplay tests={tests} />
+      </div>
+    </div>
+  );
+}
+```
+
+#### Pattern 2: Sequential Workflow
+```typescript
+// Use in a multi-step evaluation workflow
+function EvaluationWorkflow() {
+  const [currentStep, setCurrentStep] = useState('setup');
+  
+  return (
+    <div>
+      {currentStep === 'human-eval' && (
+        <UserJudge
+          tests={tests}
+          criteria={criteria}
+          onComplete={(results) => {
+            saveHumanResults(results);
+            setCurrentStep('ai-eval');
+          }}
+          isOpen={true}
+          className="mb-8"
+        />
+      )}
+      
+      {currentStep === 'ai-eval' && (
+        <AIEvaluationComponent />
+      )}
+    </div>
+  );
+}
+```
+
+#### Pattern 3: Tabbed Interface
+```typescript
+// Use within tabs for different evaluation methods
+function TabbedEvaluation() {
+  const [activeTab, setActiveTab] = useState('human');
+  
+  return (
+    <div>
+      <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
+      
+      {activeTab === 'human' && (
+        <UserJudge
+          tests={tests}
+          criteria={criteria}
+          onComplete={handleResults}
+          isOpen={true}
+        />
+      )}
+      
+      {activeTab === 'ai' && (
+        <AIEvaluationInterface />
+      )}
+    </div>
+  );
+}
+```
+
+### Data Analysis Utilities
+```typescript
+// Helper functions for analyzing judgement data
+
+function calculatePairwiseAgreement(judgements: UserTestJudgement[]): number {
+  // Calculate consistency in pairwise comparisons
+  // Returns value between 0 (no agreement) and 1 (perfect agreement)
+}
+
+function convertToRankings(judgements: UserTestJudgement[]): Array<{id: number, rank: number}> {
+  // Convert pairwise comparisons to overall rankings
+  // Uses tournament-style scoring
+}
+
+function findOutliers(judgements: UserTestJudgement[]): UserTestJudgement[] {
+  // Identify judgements that seem inconsistent with others
+  // Useful for quality control
+}
+
+function correlateWithAI(
+  humanJudgements: UserTestJudgement[], 
+  aiScores: TestResult[]
+): number {
+  // Calculate correlation between human judgements and AI scores
+  // Returns Pearson correlation coefficient
+}
+```
+
+### Testing
+A test page is available at `/test-userjudge` demonstrating the embeddable nature of the component. The test interface shows:
+- Side-by-side layout with UserJudge and simulated API progress
+- Configurable evaluation criteria
+- Sample test data display
+- Results comparison between human and simulated AI evaluation
+- Raw data output for development
+
+### Performance Considerations
+- **Combinations**: For n tests, generates n(n-1)/2 comparisons
+- **Memory**: Stores all judgements in component state
+- **UI**: Compact design suitable for embedding in larger interfaces
+- **Responsive**: Adapts to container constraints while maintaining usability
+- **Scrollable Content**: Long test texts are contained within fixed-height scrollable areas
+
+### Accessibility Features
+- Keyboard navigation support for slider
+- Clear visual hierarchy and contrast
+- Progress indicators for user orientation
+- Descriptive labels for screen readers
+- Responsive design for various screen sizes and input methods
