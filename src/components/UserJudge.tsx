@@ -27,7 +27,6 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   const [currentPairIndex, setCurrentPairIndex] = useState(0);
   const [judgements, setJudgements] = useState<UserTestJudgement[]>([]);
   const [currentJudgement, setCurrentJudgement] = useState<number>(0);
-  const [isInteracting, setIsInteracting] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate all combinations of test pairs and randomize order
@@ -69,14 +68,12 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   };
 
   const handleSliderMouseDown = () => {
-    setIsInteracting(true);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
   };
 
   const handleSliderMouseUp = () => {
-    setIsInteracting(false);
     // Auto-advance after a short delay to ensure the user has finished adjusting
     timeoutRef.current = setTimeout(() => {
       handleNext();
