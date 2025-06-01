@@ -214,14 +214,6 @@ Approach: ${selectedPrompt.approach}`;
                       }}
                     />
                     
-                    {/* Perfect agreement reference line (diagonal) */}
-                    <ReferenceLine 
-                      segment={[{ x: -1, y: -1 }, { x: 1, y: 1 }]} 
-                      stroke="#94a3b8" 
-                      strokeDasharray="5 5" 
-                      strokeWidth={1}
-                    />
-                    
                     {/* Line of best fit */}
                     {bestFitLine.length > 0 && (
                       <ReferenceLine 
@@ -245,7 +237,7 @@ Approach: ${selectedPrompt.approach}`;
                 </ResponsiveContainer>
               </div>
               <p className="text-sm text-royal-heath-600 mt-2">
-                Each point represents a comparison between two test outputs. The gray dashed line shows perfect agreement, and the red line shows the line of best fit through the data.
+                Each point represents a comparison between two test outputs. The red line shows the line of best fit through the data.
               </p>
             </div>
           ) : (

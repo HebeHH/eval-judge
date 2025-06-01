@@ -96,7 +96,7 @@ Your role is to be direct, thorough, and uncompromising in identifying gaps. You
 
 A high-quality evaluation prompt requires:
 
-1. **Clear System Context**: Understanding what the AI system being evaluated actually does, its purpose, and its expected outputs
+1. **Clear System Context**: Understanding what the AI system being evaluated actually does, its purpose,
 2. **Concrete Success/Failure Definitions**: Specific, observable criteria for what constitutes good vs. bad performance 
 3. **Atomic Quality Criteria**: Breaking down abstract qualities (like "WITTY", "INTELLIGENT", "KIND") into measurable, testable components
 4. **Operational Definitions**: Clear explanations of subjective terms that multiple evaluators would interpret consistently
@@ -109,11 +109,6 @@ A high-quality evaluation prompt requires:
 
 For each conversation, systematically evaluate these dimensions:
 
-### 1. System Understanding
-- **Missing**: What specific tasks/functions does the AI system perform? 
-- **Missing**: What is the intended use case and context?
-- **Missing**: Who is the target audience for the AI outputs?
-- **Missing**: What are the typical input/output formats?
 
 ### 2. Success Criteria Clarity
 - **Vague**: Are quality terms like "witty/intelligent/kind" still abstract and undefined?

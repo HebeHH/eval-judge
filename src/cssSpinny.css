@@ -2,7 +2,7 @@
 .loader {
   width: 90px;
   height: 14px;
-  box-shadow: 0 3px 0 #fff;
+  box-shadow: 0 3px 0 #7ec7ff;
   position: relative;
   clip-path: inset(-40px 0 -5px)
 }
@@ -11,7 +11,7 @@
   position: absolute;
   inset: auto calc(50% - 17px) 0;
   height: 50px;
-  --g:no-repeat linear-gradient(#ccc 0 0);
+  --g:no-repeat linear-gradient(#1e34dd 0 0);
   background: var(--g),var(--g),var(--g),var(--g);
   background-size: 16px 14px;
   animation:
