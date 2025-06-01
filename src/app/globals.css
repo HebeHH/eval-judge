@@ -10,6 +10,18 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  --color-royal-heath-50: #fcf3fa;
+  --color-royal-heath-100: #fae9f6;
+  --color-royal-heath-200: #f8d2ee;
+  --color-royal-heath-300: #f3aedf;
+  --color-royal-heath-400: #eb7bc9;
+  --color-royal-heath-500: #e054b1;
+  --color-royal-heath-600: #ce3492;
+  --color-royal-heath-700: #b22477;
+  --color-royal-heath-800: #932162;
+  --color-royal-heath-900: #7b2054;
+  --color-royal-heath-950: #4b0c30;
 }
 
 @media (prefers-color-scheme: dark) {
