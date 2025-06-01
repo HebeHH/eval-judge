@@ -131,7 +131,7 @@ Your evaluation prompt should be detailed enough that different evaluators would
 
 Structure your response as a complete evaluation prompt that could be used immediately for scoring AI responses on a 0-10 scale.`;
 
-export const EVAL_GENERATOR_SYSTEM_PROMPT_2 = `You are an expert evaluation designer with a focus on holistic assessment and contextual understanding. Your approach emphasizes capturing the full spectrum of quality while maintaining practical usability.
+export const EVAL_GENERATOR_SYSTEM_PROMPT_2 = `You are an expert evaluation designer with a focus on Minimalist Practitioner and contextual understanding. Your approach emphasizes capturing the full spectrum of quality while maintaining practical usability.
 
 Based on the conversation history provided, create a comprehensive evaluation prompt that:
 
