@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, ReferenceLine } from 'recharts';
 
 interface BatchScoreResult {
   id: number;
@@ -47,7 +47,7 @@ export default function EvalRater({ batchScoreResults, userTestJudgements, selec
       }
 
       // AI judgement = (B.score - A.score) / 5
-      const aiJudgement = (testB.score - testA.score) / 5;
+      const aiJudgement = (testB.score - testA.score) / 7;
       
       return {
         testAid: judgement.testAid,
@@ -78,14 +78,41 @@ export default function EvalRater({ batchScoreResults, userTestJudgements, selec
     
     const correlation = covariance / Math.sqrt(userVariance * aiVariance);
     
+    // Calculate linear regression for line of best fit
+    const n = normalizedResults.length;
+    const sumX = userValues.reduce((sum, val) => sum + val, 0);
+    const sumY = aiValues.reduce((sum, val) => sum + val, 0);
+    const sumXY = normalizedResults.reduce((sum, r) => sum + r.userJudgement * r.aiJudgement, 0);
+    const sumXX = userValues.reduce((sum, val) => sum + val * val, 0);
+    
+    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    
     return {
       count: normalizedResults.length,
       meanAbsoluteDifference: meanAbsoluteDifference.toFixed(3),
       userMean: userMean.toFixed(3),
       aiMean: aiMean.toFixed(3),
-      correlation: isNaN(correlation) ? 'N/A' : correlation.toFixed(3)
+      correlation: isNaN(correlation) ? 'N/A' : correlation.toFixed(3),
+      slope: isNaN(slope) ? 0 : slope,
+      intercept: isNaN(intercept) ? 0 : intercept
     };
   }, [normalizedResults]);
+
+  // Generate line of best fit data points
+  const bestFitLine = useMemo(() => {
+    if (!summaryStats || summaryStats.slope === 0) return [];
+    
+    const xMin = -1;
+    const xMax = 1;
+    const yMin = summaryStats.slope * xMin + summaryStats.intercept;
+    const yMax = summaryStats.slope * xMax + summaryStats.intercept;
+    
+    return [
+      { userJudgement: xMin, aiJudgement: yMin },
+      { userJudgement: xMax, aiJudgement: yMax }
+    ];
+  }, [summaryStats]);
 
   const handleCopyStats = async () => {
     if (!summaryStats) return;
@@ -186,6 +213,27 @@ Approach: ${selectedPrompt.approach}`;
                         return null;
                       }}
                     />
+                    
+                    {/* Perfect agreement reference line (diagonal) */}
+                    <ReferenceLine 
+                      segment={[{ x: -1, y: -1 }, { x: 1, y: 1 }]} 
+                      stroke="#94a3b8" 
+                      strokeDasharray="5 5" 
+                      strokeWidth={1}
+                    />
+                    
+                    {/* Line of best fit */}
+                    {bestFitLine.length > 0 && (
+                      <ReferenceLine 
+                        segment={[
+                          { x: bestFitLine[0].userJudgement, y: bestFitLine[0].aiJudgement }, 
+                          { x: bestFitLine[1].userJudgement, y: bestFitLine[1].aiJudgement }
+                        ]} 
+                        stroke="#ef4444" 
+                        strokeWidth={2}
+                      />
+                    )}
+                    
                     <Scatter 
                       data={normalizedResults} 
                       fill="#6366f1" 
@@ -197,7 +245,7 @@ Approach: ${selectedPrompt.approach}`;
                 </ResponsiveContainer>
               </div>
               <p className="text-sm text-royal-heath-600 mt-2">
-                Each point represents a comparison between two test outputs. Perfect agreement would show all points on the diagonal line.
+                Each point represents a comparison between two test outputs. The gray dashed line shows perfect agreement, and the red line shows the line of best fit through the data.
               </p>
             </div>
           ) : (

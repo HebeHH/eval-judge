@@ -28,7 +28,7 @@ interface BatchScoreFlowProps {
 }
 
 // Configuration parameter for sample size
-const SAMPLE_SIZE = 10;
+const SAMPLE_SIZE = 15;
 
 export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlowProps) {
   const [testSample, setTestSample] = useState<Test[]>([]);
