@@ -354,7 +354,7 @@ const PROMPT_TYPES = {
   2: {
     name: 'research-grade',
     systemPrompt: 'EVAL_GENERATOR_SYSTEM_PROMPT_3',
-    focus: 'Comprehensive, systematic approach with academic rigor'
+    focus: 'well-rounded, flexible evaluation'
   }
 };
 ```
@@ -396,7 +396,7 @@ To test your integration without going through the full prompt building flow:
 ```typescript
 // Mock data for testing
 const mockSelectedPrompt: SelectedEvaluationPrompt = {
-  title: "Precision-Focused Evaluation",
+  title: "Academic Structure",
   approach: "Emphasizes clarity, measurability, and practical application",
   content: "Evaluate responses based on...", // Your test prompt content
   criteria: "WITTY",

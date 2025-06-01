@@ -217,19 +217,19 @@ export default function EvalPromptBuilder() {
       
       setEvalPrompts([
         {
-          title: 'Precision-Focused Evaluation',
+          title: 'Academic Structure',
           content: response1,
-          approach: 'Emphasizes clarity, measurability, and practical application'
+          approach:"highly structured, research-grade evaluation prompt with rigorous methodology"
         },
         {
-          title: 'Holistic Assessment',
+          title: 'Minimalist Practitioner',
           content: response2,
-          approach: 'Balances multiple dimensions with contextual understanding'
+          approach: 'streamlined, action-oriented evaluation'
         },
         {
-          title: 'Research-Grade Framework',
+          title: 'Balanced Generalist',
           content: response3,
-          approach: 'Comprehensive, systematic approach with academic rigor'
+          approach: 'well-rounded, flexible evaluation'
         }
       ]);
       
@@ -340,18 +340,18 @@ export default function EvalPromptBuilder() {
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
               {[
                 {
-                  title: 'Precision-Focused Evaluation',
-                  approach: 'Emphasizes clarity, measurability, and practical application',
+                  title: 'Academic Structure',
+                  approach:"highly structured, research-grade evaluation prompt with rigorous methodology",
                   index: 0
                 },
                 {
-                  title: 'Holistic Assessment',
-                  approach: 'Balances multiple dimensions with contextual understanding',
+                  title: 'Minimalist Practitioner',
+                  approach: 'streamlined, action-oriented evaluation',
                   index: 1
                 },
                 {
-                  title: 'Research-Grade Framework',
-                  approach: 'Comprehensive, systematic approach with academic rigor',
+                  title: 'Balanced Generalist',
+                  approach: 'well-rounded, flexible evaluation',
                   index: 2
                 }
               ].map((promptInfo) => {
@@ -432,8 +432,8 @@ export default function EvalPromptBuilder() {
 
   // Conversation phase
   return (
-    <div className="min-h-screen bg-gradient-to-br from-royal-heath-50 to-royal-heath-100 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-screen flex flex-col">
+    <div className="min-h-screen bg-gradient-to-bl from-royal-heath-200 to-royal-heath-300 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-[92vh] flex flex-col">
         <div className="bg-white rounded-xl shadow-lg overflow-hidden flex-1 flex flex-col">
           {/* Header */}
           <div className="bg-royal-heath-600 text-white p-6 flex-shrink-0">
