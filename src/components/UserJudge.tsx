@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import DarkModeToggle from "./DarkModeToggle";
 
 // Import Test interface from the API route
 interface Test {
@@ -158,9 +157,6 @@ export default function UserJudge({
               Compare response quality for{" "}
               <strong>{criteria.toLowerCase()}</strong> evaluation
             </p>
-          </div>
-          <div className="self-start sm:self-auto">
-            <DarkModeToggle />
           </div>
         </div>
 

@@ -140,7 +140,7 @@ const AnalysisMethodologySidebar = ({
 
         {/* Interpretation Guide */}
         <div className="mb-8 p-4 bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-700 rounded-sm">
-          <h4 className="text-body font-medium text-charcoal-800 dark:text-charcoal-50 mb-2">
+          <h4 className="text-body font-medium text-charcoal-800 dark:text-charcoal-800 mb-2">
             Interpretation Guide
           </h4>
           <div className="space-y-2 text-body-small text-charcoal-600 dark:text-charcoal-300">
@@ -379,6 +379,7 @@ Approach: ${selectedPrompt.approach}`;
                           }}
                           stroke="#666666"
                           tick={{ fill: "#666666" }}
+                          tickFormatter={(value) => value.toFixed(2)}
                         />
                         <YAxis
                           type="number"
@@ -393,6 +394,7 @@ Approach: ${selectedPrompt.approach}`;
                           }}
                           stroke="#666666"
                           tick={{ fill: "#666666" }}
+                          tickFormatter={(value) => value.toFixed(2)}
                         />
                         <Tooltip
                           cursor={{ strokeDasharray: "2 2" }}
@@ -448,9 +450,9 @@ Approach: ${selectedPrompt.approach}`;
 
                         <Scatter
                           data={normalizedResults}
-                          fill="#1a1a1a"
+                          fill="#FFD700"
                           fillOpacity={0.8}
-                          stroke="#666666"
+                          stroke="#B8860B"
                           strokeWidth={1}
                         />
                       </ScatterChart>

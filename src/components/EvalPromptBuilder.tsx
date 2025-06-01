@@ -222,7 +222,7 @@ const MethodologySidebar = ({
 
         {phase === "conversation" && (
           <div className="mt-8 p-4 bg-gold-50 dark:bg-gold-900 border border-gold-200 dark:border-gold-700 rounded-sm">
-            <h4 className="text-body font-medium text-charcoal-800 dark:text-charcoal-50 mb-2">
+            <h4 className="text-body font-medium text-charcoal-100 dark:text-charcoal-50 mb-2">
               Current Phase
             </h4>
             <div className="flex items-center gap-2 mb-2">
@@ -841,12 +841,6 @@ export default function EvalPromptBuilder() {
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => setShowCriticSidebar(!showCriticSidebar)}
-                      className="btn-secondary text-charcoal-800 bg-charcoal-50 border-charcoal-200 hover:bg-charcoal-100 lg:hidden"
-                    >
-                      {showCriticSidebar ? "Hide" : "Show"} Analysis
-                    </button>
                     <button
                       onClick={resetBuilder}
                       className="btn-secondary text-charcoal-800 bg-charcoal-50 border-charcoal-200 hover:bg-charcoal-100"

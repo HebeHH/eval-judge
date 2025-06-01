@@ -22,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AI Evaluation Framework | Research-Grade Prompt Engineering",
+  title: "EvalAtuin | Research-Grade Prompt Engineering",
   description:
     "A sophisticated evaluation system for AI responses using advanced prompt engineering methodology and academic rigor.",
 };

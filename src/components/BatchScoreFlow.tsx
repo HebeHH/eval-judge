@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import UserJudge, { UserTestJudgement } from "./UserJudge";
 import EvalRater from "./EvalRater";
-import DarkModeToggle from "./DarkModeToggle";
 import { testOutputs } from "@/constants/testOutputs";
 
 interface Test {
@@ -189,7 +188,6 @@ const EvaluationMethodologySidebar = ({
 
 export default function BatchScoreFlow({
   selectedPrompt,
-  onBack,
 }: BatchScoreFlowProps) {
   const [testSample, setTestSample] = useState<Test[]>([]);
   const [batchScoreResults, setBatchScoreResults] = useState<
@@ -328,97 +326,44 @@ export default function BatchScoreFlow({
       <ElephantCorner position="bottom-left" />
       <ElephantCorner position="bottom-right" />
 
-      {/* Dark Mode Toggle */}
-      <div className="fixed top-4 right-4 xl:top-6 xl:right-6 z-50">
-        <DarkModeToggle />
-      </div>
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col xl:flex-row">
         <div className="flex-1 py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="card-elevated p-6 sm:p-8 mb-6 sm:mb-8 fade-in">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-6 mb-6">
+            <div className="card-elevated p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
                 <div className="flex-1">
                   <h1 className="text-heading-1 text-charcoal-800 dark:text-charcoal-50 mb-2">
                     DeepAtuin Validation
                   </h1>
-                  <p className="text-body text-charcoal-600 dark:text-charcoal-300 mb-2">
+                  <p className="text-body text-charcoal-600 dark:text-charcoal-300">
                     Testing <em>{selectedPrompt.title}</em> methodology for{" "}
                     <strong>{selectedPrompt.criteria}</strong> evaluation
                   </p>
-                  <p className="text-body-small text-charcoal-500 dark:text-charcoal-400">
-                    Dual validation with {testSample.length} test samples
-                  </p>
                 </div>
-                <button
-                  onClick={onBack}
-                  className="btn-secondary self-start sm:self-auto whitespace-nowrap"
-                >
-                  Return to Protocols
-                </button>
+                <div className="flex flex-col items-end gap-2">
+                  <span className="text-caption text-charcoal-600 dark:text-charcoal-400">
+                    {progress.current} / {progress.total} COMPLETED
+                  </span>
+                  <div className="w-32 bg-charcoal-200 dark:bg-charcoal-700 h-2">
+                    <div
+                      className="bg-gold-500 h-2 transition-all duration-300 progress-bar"
+                      style={{
+                        width:
+                          progress.total > 0
+                            ? `${(progress.current / progress.total) * 100}%`
+                            : "0%",
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
               <div className="text-emphasis">
                 <p>
                   Systematic assessment validates evaluation consistency and
                   reliability through parallel AI and human judgment streams.
                 </p>
-              </div>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="card p-6 sm:p-8 mb-6 sm:mb-8 fade-in">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-                <h2 className="text-heading-3 text-charcoal-800 dark:text-charcoal-50">
-                  AI Evaluation Progress
-                </h2>
-                <span className="text-caption text-charcoal-600 dark:text-charcoal-400">
-                  {progress.current} / {progress.total} COMPLETED
-                </span>
-              </div>
-
-              <div className="w-full bg-charcoal-200 dark:bg-charcoal-700 h-3 sm:h-2 mb-4">
-                <div
-                  className="bg-gold-500 h-3 sm:h-2 transition-all duration-300 flex items-center justify-end pr-2 progress-bar"
-                  style={{
-                    width:
-                      progress.total > 0
-                        ? `${(progress.current / progress.total) * 100}%`
-                        : "0%",
-                  }}
-                >
-                  {progress.total > 0 &&
-                    progress.current === progress.total && (
-                      <span className="text-charcoal-50 text-xs font-medium hidden sm:inline">
-                        {Math.round((progress.current / progress.total) * 100)}%
-                      </span>
-                    )}
-                </div>
-              </div>
-
-              <div className="text-body-small text-charcoal-600 dark:text-charcoal-300">
-                {isProcessing ? (
-                  <div className="flex items-center gap-3">
-                    <div className="loading-dots">
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                    </div>
-                    <span>
-                      Processing test outputs through AI evaluation protocol...
-                    </span>
-                  </div>
-                ) : isBatchScoreComplete ? (
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-0.5 bg-gold-500"></div>
-                    <span className="text-charcoal-800 dark:text-charcoal-200 font-medium">
-                      Batch evaluation completed successfully
-                    </span>
-                  </div>
-                ) : (
-                  <span>Initializing evaluation process...</span>
-                )}
               </div>
             </div>
 
@@ -434,13 +379,13 @@ export default function BatchScoreFlow({
             )}
 
             {/* Status Information */}
-            <div className="card p-6 sm:p-8 fade-in">
-              <h3 className="text-heading-3 text-charcoal-800 dark:text-charcoal-50 mb-6">
+            <div className="card p-4 sm:p-6 fade-in">
+              <h3 className="text-heading-3 text-charcoal-800 dark:text-charcoal-50 mb-4">
                 Validation Status
               </h3>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-6">
-                  <h4 className="text-body font-medium text-charcoal-700 dark:text-charcoal-300 mb-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-4">
+                  <h4 className="text-body font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
                     AI Evaluation Stream
                   </h4>
                   <p className="text-body-small text-charcoal-600 dark:text-charcoal-300">
@@ -451,8 +396,8 @@ export default function BatchScoreFlow({
                       : "Preparing evaluation protocol..."}
                   </p>
                 </div>
-                <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-6">
-                  <h4 className="text-body font-medium text-charcoal-700 dark:text-charcoal-300 mb-3">
+                <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-4">
+                  <h4 className="text-body font-medium text-charcoal-700 dark:text-charcoal-300 mb-2">
                     Human Validation Stream
                   </h4>
                   <p className="text-body-small text-charcoal-600 dark:text-charcoal-300">
@@ -467,7 +412,7 @@ export default function BatchScoreFlow({
 
               {isBatchScoreComplete &&
                 (isUserJudgeComplete || !isUserJudgeOpen) && (
-                  <div className="mt-6 p-6 bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-700">
+                  <div className="mt-4 p-4 bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-700">
                     <div className="flex items-center gap-3">
                       <div className="w-6 h-0.5 bg-gold-500"></div>
                       <p className="text-charcoal-800 dark:text-charcoal-200 font-medium">
