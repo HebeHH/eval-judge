@@ -219,7 +219,7 @@ export default function EvalPromptBuilder() {
         {
           title: 'Academic Structure',
           content: response1,
-          approach:"highly structured, research-grade evaluation prompt with rigorous methodology"
+          approach:"highly structured, research-grade eval"
         },
         {
           title: 'Minimalist Practitioner',
@@ -341,7 +341,7 @@ export default function EvalPromptBuilder() {
               {[
                 {
                   title: 'Academic Structure',
-                  approach:"highly structured, research-grade evaluation prompt with rigorous methodology",
+                  approach:"highly structured, research-grade eval",
                   index: 0
                 },
                 {
@@ -373,7 +373,7 @@ export default function EvalPromptBuilder() {
                     <div className="bg-royal-heath-50 rounded-lg p-6 flex-1 overflow-y-auto mb-6">
                       {hasContent ? (
                         <div>
-                          <pre className="whitespace-pre-wrap text-base text-royal-heath-800 font-mono leading-relaxed">
+                          <pre className="whitespace-pre-wrap text-xs text-royal-heath-800 font-mono leading-relaxed">
                             {finalPrompt?.content || streamingText}
                           </pre>
                           {streamingText && !finalPrompt && (
