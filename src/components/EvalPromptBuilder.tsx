@@ -315,7 +315,7 @@ export default function EvalPromptBuilder() {
   if (phase === 'generation') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-royal-heath-50 to-royal-heath-100 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-royal-heath-900 mb-4">
               Your Evaluation Prompts for {selectedCriteria}
@@ -337,7 +337,7 @@ export default function EvalPromptBuilder() {
               <p className="text-royal-heath-700">Generating your evaluation prompts...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
               {[
                 {
                   title: 'Precision-Focused Evaluation',
@@ -360,48 +360,65 @@ export default function EvalPromptBuilder() {
                 const hasContent = finalPrompt?.content || streamingText;
                 
                 return (
-                  <div key={promptInfo.index} className="bg-white rounded-xl shadow-lg p-6">
-                    <div className="mb-4">
-                      <h3 className="text-xl font-semibold text-royal-heath-800 mb-2">
+                  <div key={promptInfo.index} className="bg-white rounded-xl shadow-lg p-8 flex flex-col h-[calc(100vh-16rem)]">
+                    <div className="mb-6 flex-shrink-0">
+                      <h3 className="text-2xl font-semibold text-royal-heath-800 mb-3">
                         {promptInfo.title}
                       </h3>
-                      <p className="text-sm text-royal-heath-600 mb-4">
+                      <p className="text-base text-royal-heath-600 mb-4">
                         {promptInfo.approach}
                       </p>
                     </div>
                     
-                    <div className="bg-royal-heath-50 rounded-lg p-4 max-h-96 overflow-y-auto">
+                    <div className="bg-royal-heath-50 rounded-lg p-6 flex-1 overflow-y-auto mb-6">
                       {hasContent ? (
                         <div>
-                          <pre className="whitespace-pre-wrap text-sm text-royal-heath-800 font-mono">
+                          <pre className="whitespace-pre-wrap text-base text-royal-heath-800 font-mono leading-relaxed">
                             {finalPrompt?.content || streamingText}
                           </pre>
                           {streamingText && !finalPrompt && (
-                            <div className="inline-block w-2 h-4 bg-royal-heath-600 animate-pulse ml-1"></div>
+                            <div className="inline-block w-2 h-5 bg-royal-heath-600 animate-pulse ml-1"></div>
                           )}
                         </div>
                       ) : isGeneratingEvals ? (
-                        <div className="flex items-center justify-center py-8">
+                        <div className="flex items-center justify-center h-full">
                           <div className="flex space-x-1">
-                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce"></div>
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
                           </div>
                         </div>
                       ) : (
-                        <div className="text-center py-8 text-royal-heath-500">
+                        <div className="text-center h-full flex items-center justify-center text-royal-heath-500 text-lg">
                           Waiting to generate...
                         </div>
                       )}
                     </div>
                     
                     {finalPrompt?.content && (
-                      <button
-                        onClick={() => navigator.clipboard.writeText(finalPrompt.content)}
-                        className="mt-4 w-full px-4 py-2 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors"
-                      >
-                        Copy to Clipboard
-                      </button>
+                      <div className="flex gap-3 flex-shrink-0">
+                        <button
+                          onClick={() => {
+                            // TODO: Hook up to evaluation system
+                            console.log('Selected evaluation prompt:', {
+                              title: promptInfo.title,
+                              approach: promptInfo.approach,
+                              content: finalPrompt.content,
+                              criteria: selectedCriteria,
+                              index: promptInfo.index
+                            });
+                          }}
+                          className="flex-1 px-6 py-3 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors font-semibold"
+                        >
+                          Select This Prompt
+                        </button>
+                        <button
+                          onClick={() => navigator.clipboard.writeText(finalPrompt.content)}
+                          className="px-6 py-3 bg-royal-heath-100 text-royal-heath-700 border border-royal-heath-300 rounded-lg hover:bg-royal-heath-200 transition-colors font-semibold"
+                        >
+                          Copy
+                        </button>
+                      </div>
                     )}
                   </div>
                 );

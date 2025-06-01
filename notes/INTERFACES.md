@@ -253,3 +253,155 @@ Scoring guidelines:
 - No conversation history is stored server-side
 - Each request is processed independently
 - Consider data retention policies for logged requests
+
+## Evaluation Prompt Builder Integration
+
+### Overview
+The Evaluation Prompt Builder component generates three different evaluation prompts and allows users to select one for use in the evaluation system. This section documents how to integrate with the prompt selection functionality.
+
+### Selection Event Data Structure
+When a user clicks "Select This Prompt" on any evaluation prompt card, the following data structure is logged to console and can be captured for integration:
+
+```typescript
+interface SelectedEvaluationPrompt {
+  title: string;           // e.g., "Precision-Focused Evaluation"
+  approach: string;        // Description of the evaluation approach
+  content: string;         // The full evaluation prompt text
+  criteria: string;        // The original criteria: "WITTY" | "INTELLIGENT" | "KIND"
+  index: number;          // 0, 1, or 2 (corresponding to the three prompt types)
+}
+```
+
+### Integration Points
+
+#### 1. Capturing Selection Events
+To capture when a user selects an evaluation prompt, modify the onClick handler in `EvalPromptBuilder.tsx`:
+
+```typescript
+// Current implementation (line ~320 in EvalPromptBuilder.tsx)
+onClick={() => {
+  // TODO: Hook up to evaluation system
+  console.log('Selected evaluation prompt:', {
+    title: promptInfo.title,
+    approach: promptInfo.approach,
+    content: finalPrompt.content,
+    criteria: selectedCriteria,
+    index: promptInfo.index
+  });
+}}
+
+// Replace with your integration:
+onClick={() => {
+  const selectedPrompt: SelectedEvaluationPrompt = {
+    title: promptInfo.title,
+    approach: promptInfo.approach,
+    content: finalPrompt.content,
+    criteria: selectedCriteria,
+    index: promptInfo.index
+  };
+  
+  // Your integration code here:
+  handlePromptSelection(selectedPrompt);
+}}
+```
+
+#### 2. Using Selected Prompts for Evaluation
+The selected prompt content can be used directly as a `judgingMatrix` parameter for the `/api/batchScore` endpoint:
+
+```typescript
+function handlePromptSelection(selectedPrompt: SelectedEvaluationPrompt) {
+  // Store the selected prompt for later use
+  const judgingMatrix = selectedPrompt.content;
+  
+  // Example: Use with batch scoring
+  const evaluateTests = async (tests: Test[]) => {
+    const response = await fetch('/api/batchScore', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        judgingMatrix: judgingMatrix,
+        tests: tests
+      })
+    });
+    return response.json();
+  };
+  
+  // Example: Navigate to evaluation interface
+  router.push('/evaluate', { 
+    state: { 
+      selectedPrompt,
+      judgingMatrix 
+    } 
+  });
+}
+```
+
+#### 3. Prompt Type Mapping
+The three prompt types correspond to different evaluation approaches:
+
+```typescript
+const PROMPT_TYPES = {
+  0: {
+    name: 'precision-focused',
+    systemPrompt: 'EVAL_GENERATOR_SYSTEM_PROMPT_1',
+    focus: 'Clarity, measurability, and practical application'
+  },
+  1: {
+    name: 'holistic',
+    systemPrompt: 'EVAL_GENERATOR_SYSTEM_PROMPT_2', 
+    focus: 'Multiple dimensions with contextual understanding'
+  },
+  2: {
+    name: 'research-grade',
+    systemPrompt: 'EVAL_GENERATOR_SYSTEM_PROMPT_3',
+    focus: 'Comprehensive, systematic approach with academic rigor'
+  }
+};
+```
+
+### Recommended Integration Patterns
+
+#### Pattern 1: Direct Navigation
+```typescript
+function handlePromptSelection(selectedPrompt: SelectedEvaluationPrompt) {
+  // Store in localStorage or state management
+  localStorage.setItem('selectedEvaluationPrompt', JSON.stringify(selectedPrompt));
+  
+  // Navigate to evaluation page
+  window.location.href = '/evaluate';
+}
+```
+
+#### Pattern 2: Modal/Overlay Integration
+```typescript
+function handlePromptSelection(selectedPrompt: SelectedEvaluationPrompt) {
+  // Show confirmation modal
+  setSelectedPrompt(selectedPrompt);
+  setShowConfirmationModal(true);
+}
+```
+
+#### Pattern 3: State Management Integration
+```typescript
+// With Redux/Zustand/Context
+function handlePromptSelection(selectedPrompt: SelectedEvaluationPrompt) {
+  dispatch(setEvaluationPrompt(selectedPrompt));
+  dispatch(setCurrentStep('test-upload'));
+}
+```
+
+### Testing Integration
+To test your integration without going through the full prompt building flow:
+
+```typescript
+// Mock data for testing
+const mockSelectedPrompt: SelectedEvaluationPrompt = {
+  title: "Precision-Focused Evaluation",
+  approach: "Emphasizes clarity, measurability, and practical application",
+  content: "Evaluate responses based on...", // Your test prompt content
+  criteria: "WITTY",
+  index: 0
+};
+
+handlePromptSelection(mockSelectedPrompt);
+```
