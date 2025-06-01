@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import DarkModeToggle from "./DarkModeToggle";
 
 // Import Test interface from the API route
 interface Test {
@@ -23,7 +24,13 @@ interface UserJudgeProps {
   className?: string; // Allow custom styling
 }
 
-export default function UserJudge({ tests, criteria, onComplete, isOpen, className = "" }: UserJudgeProps) {
+export default function UserJudge({
+  tests,
+  criteria,
+  onComplete,
+  isOpen,
+  className = "",
+}: UserJudgeProps) {
   const [currentPairIndex, setCurrentPairIndex] = useState(0);
   const [judgements, setJudgements] = useState<UserTestJudgement[]>([]);
   const [currentJudgement, setCurrentJudgement] = useState<number>(0);
@@ -32,14 +39,14 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   // Generate all combinations of test pairs and randomize order
   const testPairs = useMemo(() => {
     const pairs: Array<[Test, Test]> = [];
-    
+
     // Generate all combinations (not permutations) of 2 tests
     for (let i = 0; i < tests.length; i++) {
       for (let j = i + 1; j < tests.length; j++) {
         pairs.push([tests[i], tests[j]]);
       }
     }
-    
+
     // Randomize order
     return pairs.sort(() => Math.random() - 0.5);
   }, [tests]);
@@ -92,7 +99,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
     const newJudgement: UserTestJudgement = {
       testAid: currentPair[0].id,
       testBid: currentPair[1].id,
-      judgement: currentJudgement
+      judgement: currentJudgement,
     };
 
     const updatedJudgements = [...judgements, newJudgement];
@@ -103,7 +110,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
       onComplete(updatedJudgements);
     } else {
       // Move to next pair
-      setCurrentPairIndex(prev => prev + 1);
+      setCurrentPairIndex((prev) => prev + 1);
       setCurrentJudgement(0);
     }
   };
@@ -119,12 +126,18 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
 
   const getSliderLabel = (value: number): string => {
     switch (value) {
-      case -1: return `A much more ${criteria}`;
-      case -0.5: return `A more ${criteria}`;
-      case 0: return 'Equal';
-      case 0.5: return `B more ${criteria}`;
-      case 1: return `B much more ${criteria}`;
-      default: return 'Equal';
+      case -1:
+        return `Response A significantly more ${criteria}`;
+      case -0.5:
+        return `Response A moderately more ${criteria}`;
+      case 0:
+        return "Approximately equivalent";
+      case 0.5:
+        return `Response B moderately more ${criteria}`;
+      case 1:
+        return `Response B significantly more ${criteria}`;
+      default:
+        return "Approximately equivalent";
     }
   };
 
@@ -135,61 +148,74 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   const progress = ((currentPairIndex + 1) / testPairs.length) * 100;
 
   return (
-    <div className={`w-full bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`} style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-      {/* Header */}
-      <div className="text-white p-6" style={{ backgroundColor: '#8b4513' }}>
-        <h2 className="text-xl font-semibold text-center mb-3" style={{ fontFamily: 'var(--font-playfair)' }}>
-          Which output is more {criteria}?
-        </h2>
-        <div className="flex justify-between items-center opacity-90 mb-3" style={{ fontFamily: 'var(--font-crimson)' }}>
-          <span>Comparison {currentPairIndex + 1} of {testPairs.length}</span>
-          <span>{Math.round(progress)}% complete</span>
+    <div className={`w-full card-elevated overflow-hidden ${className}`}>
+      {/* Header with Dark Mode Toggle */}
+      <div className="bg-charcoal-800 dark:bg-charcoal-900 text-charcoal-50 p-4 sm:p-6 lg:p-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
+          <div className="flex-1">
+            <h2 className="text-heading-3 mb-2">DeepAtuin Human Validation</h2>
+            <p className="text-body-small text-charcoal-200 dark:text-charcoal-300">
+              Compare response quality for{" "}
+              <strong>{criteria.toLowerCase()}</strong> evaluation
+            </p>
+          </div>
+          <div className="self-start sm:self-auto">
+            <DarkModeToggle />
+          </div>
         </div>
+
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-charcoal-200 dark:text-charcoal-300 mb-4 gap-2">
+          <span className="text-caption">
+            COMPARISON {currentPairIndex + 1} OF {testPairs.length}
+          </span>
+          <span className="text-caption">
+            {Math.round(progress)}% COMPLETED
+          </span>
+        </div>
+
         {/* Progress bar */}
-        <div className="bg-amber-200 rounded-full h-2 border border-amber-300">
-          <div 
-            className="h-2 rounded-full transition-all duration-300"
-            style={{ 
-              backgroundColor: '#d2691e',
-              width: `${progress}%` 
-            }}
+        <div className="bg-charcoal-700 dark:bg-charcoal-800 h-1">
+          <div
+            className="bg-gold-500 h-1 transition-all duration-300 progress-bar"
+            style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {/* Test comparison cards */}
-      <div className="p-8">
-        <div className="grid grid-cols-2 gap-8 mb-8">
-          {/* Test A */}
-          <div className="bg-amber-50 rounded-md p-6 border border-amber-200 flex flex-col">
-            <div className="text-white text-center py-2 px-4 rounded-md mb-4 font-semibold" style={{ backgroundColor: '#8b4513', fontFamily: 'var(--font-playfair)' }}>
-              Option A
+      <div className="p-4 sm:p-6 lg:p-8">
+        {/* Mobile-first stacked layout, side-by-side on larger screens */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
+          {/* Response A */}
+          <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-4 sm:p-6 flex flex-col">
+            <div className="bg-charcoal-800 dark:bg-charcoal-900 text-charcoal-50 text-center py-3 px-4 mb-4 sm:mb-6">
+              <span className="text-heading-3">Response A</span>
             </div>
-            <div className="flex-1 min-h-[200px] overflow-y-auto">
-              <p className="leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#2c1810', textAlign: 'justify' }}>
+            <div className="flex-1 min-h-[150px] sm:min-h-[200px] overflow-y-auto">
+              <p className="text-body text-charcoal-800 dark:text-charcoal-200 leading-relaxed">
                 {currentPair[0].text}
               </p>
             </div>
           </div>
 
-          {/* Test B */}
-          <div className="bg-amber-50 rounded-md p-6 border border-amber-200 flex flex-col">
-            <div className="text-white text-center py-2 px-4 rounded-md mb-4 font-semibold" style={{ backgroundColor: '#8b4513', fontFamily: 'var(--font-playfair)' }}>
-              Option B
+          {/* Response B */}
+          <div className="bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 p-4 sm:p-6 flex flex-col">
+            <div className="bg-charcoal-800 dark:bg-charcoal-900 text-charcoal-50 text-center py-3 px-4 mb-4 sm:mb-6">
+              <span className="text-heading-3">Response B</span>
             </div>
-            <div className="flex-1 min-h-[200px] overflow-y-auto">
-              <p className="leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#2c1810', textAlign: 'justify' }}>
+            <div className="flex-1 min-h-[150px] sm:min-h-[200px] overflow-y-auto">
+              <p className="text-body text-charcoal-800 dark:text-charcoal-200 leading-relaxed">
                 {currentPair[1].text}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Slider section */}
-        <div className="flex flex-col items-center space-y-6">
+        {/* Assessment section */}
+        <div className="flex flex-col items-center space-y-6 sm:space-y-8">
           <div className="w-full max-w-4xl">
             {/* Slider */}
-            <div className="relative">
+            <div className="relative px-2">
               <input
                 type="range"
                 min="-1"
@@ -201,61 +227,66 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
                 onMouseUp={handleSliderMouseUp}
                 onTouchStart={handleSliderMouseDown}
                 onTouchEnd={handleSliderMouseUp}
-                className="w-full h-3 bg-amber-200 rounded-md appearance-none cursor-pointer slider border border-amber-300"
-                style={{
-                  background: `linear-gradient(to right, 
-                    #8b4513 0%, 
-                    #a0522d 25%, 
-                    #d2691e 50%, 
-                    #a0522d 75%, 
-                    #8b4513 100%)`
-                }}
+                className="w-full h-3 sm:h-2 bg-charcoal-200 dark:bg-charcoal-700 appearance-none cursor-pointer slider"
               />
-              
-              {/* Slider labels */}
-              <div className="flex justify-between mt-4 px-2">
-                <span className="text-sm text-center w-20" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
-                  A much more {criteria}
+
+              {/* Slider scale labels - Responsive layout */}
+              <div className="hidden sm:flex justify-between mt-4 px-1">
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400 text-center w-24">
+                  A SIGNIFICANTLY MORE {criteria.toUpperCase()}
                 </span>
-                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
-                  A more {criteria}
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400 text-center w-20">
+                  A MODERATELY MORE
                 </span>
-                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
-                  Equal
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400 text-center w-20">
+                  EQUIVALENT
                 </span>
-                <span className="text-sm text-center w-16" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
-                  B more {criteria}
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400 text-center w-20">
+                  B MODERATELY MORE
                 </span>
-                <span className="text-sm text-center w-20" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a' }}>
-                  B much more {criteria}
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400 text-center w-24">
+                  B SIGNIFICANTLY MORE {criteria.toUpperCase()}
+                </span>
+              </div>
+
+              {/* Mobile-friendly scale labels */}
+              <div className="sm:hidden mt-4 grid grid-cols-3 gap-2 text-center">
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400">
+                  A MORE {criteria.toUpperCase()}
+                </span>
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400">
+                  EQUIVALENT
+                </span>
+                <span className="text-caption text-charcoal-600 dark:text-charcoal-400">
+                  B MORE {criteria.toUpperCase()}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Current selection display */}
-          <div className="text-center">
-            <p className="text-lg font-medium" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
+          {/* Current assessment display */}
+          <div className="text-center p-4 sm:p-6 bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 w-full max-w-2xl">
+            <p className="text-caption text-charcoal-600 dark:text-charcoal-400 mb-2">
+              CURRENT ASSESSMENT
+            </p>
+            <p className="text-body-large font-medium text-charcoal-800 dark:text-charcoal-200">
               {getSliderLabel(currentJudgement)}
             </p>
           </div>
 
-          {/* Next button - now optional since auto-advance is enabled */}
+          {/* Action button */}
           <button
             onClick={handleNext}
-            className="px-8 py-3 text-white rounded-md transition-all duration-200 font-medium opacity-75 hover:opacity-100"
-            style={{ 
-              backgroundColor: '#8b4513',
-              fontFamily: 'var(--font-playfair)',
-              boxShadow: '0 2px 8px rgba(139, 69, 19, 0.3)'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#a0522d'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#8b4513'}
+            className="btn-primary px-6 sm:px-8 py-3 sm:py-4 text-body-large w-full sm:w-auto"
           >
-            {isLastPair ? 'Complete Assessment' : 'Next Comparison'}
+            {isLastPair ? "Complete Assessment" : "Record & Continue"}
           </button>
+
+          <p className="text-body-small text-charcoal-500 dark:text-charcoal-400 text-center px-4">
+            Assessment will advance automatically after adjustment
+          </p>
         </div>
       </div>
     </div>
   );
-} 
+}
