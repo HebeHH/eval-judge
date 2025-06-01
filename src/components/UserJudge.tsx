@@ -119,12 +119,12 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
 
   const getSliderLabel = (value: number): string => {
     switch (value) {
-      case -1: return `A a lot more ${criteria}`;
+      case -1: return `A much more ${criteria}`;
       case -0.5: return `A more ${criteria}`;
-      case 0: return 'Reasonably equal';
+      case 0: return 'Equal';
       case 0.5: return `B more ${criteria}`;
-      case 1: return `B a lot more ${criteria}`;
-      default: return 'Reasonably equal';
+      case 1: return `B much more ${criteria}`;
+      default: return 'Equal';
     }
   };
 
@@ -135,47 +135,47 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
   const progress = ((currentPairIndex + 1) / testPairs.length) * 100;
 
   return (
-    <div className={`w-full bg-white rounded-xl shadow-lg overflow-hidden ${className}`}>
+    <div className={`w-full bg-white rounded-lg shadow-sm border overflow-hidden ${className}`}>
       {/* Header */}
-      <div className="bg-royal-heath-600 text-white p-6">
-        <h2 className="text-2xl font-bold text-center mb-2">
+      <div className="bg-royal-heath-600 text-white p-4">
+        <h2 className="text-lg font-medium text-center mb-2">
           Which output is more {criteria}?
         </h2>
-        <div className="flex justify-between items-center text-royal-heath-100">
+        <div className="flex justify-between items-center text-royal-heath-100 text-sm">
           <span>Comparison {currentPairIndex + 1} of {testPairs.length}</span>
           <span>{Math.round(progress)}% complete</span>
         </div>
         {/* Progress bar */}
-        <div className="mt-3 bg-royal-heath-700 rounded-full h-2">
+        <div className="mt-2 bg-royal-heath-700 rounded-full h-1">
           <div 
-            className="bg-royal-heath-200 h-2 rounded-full transition-all duration-300"
+            className="bg-royal-heath-200 h-1 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {/* Test comparison cards */}
-      <div className="p-8">
-        <div className="grid grid-cols-2 gap-8 mb-8">
+      <div className="p-6">
+        <div className="grid grid-cols-2 gap-6 mb-6">
           {/* Test A */}
-          <div className="bg-royal-heath-50 rounded-lg p-6 border-2 border-royal-heath-200 flex flex-col">
-            <div className="bg-royal-heath-600 text-white text-center py-2 px-4 rounded-lg mb-4 font-bold text-lg">
+          <div className="bg-royal-heath-50 rounded-md p-4 border border-royal-heath-200 flex flex-col">
+            <div className="bg-royal-heath-600 text-white text-center py-1 px-3 rounded-md mb-3 font-medium text-sm">
               A
             </div>
-            <div className="flex-1 min-h-[200px] overflow-y-auto">
-              <p className="text-royal-heath-800 leading-relaxed">
+            <div className="flex-1 min-h-[180px] overflow-y-auto">
+              <p className="text-royal-heath-800 leading-relaxed text-sm">
                 {currentPair[0].text}
               </p>
             </div>
           </div>
 
           {/* Test B */}
-          <div className="bg-royal-heath-50 rounded-lg p-6 border-2 border-royal-heath-200 flex flex-col">
-            <div className="bg-royal-heath-600 text-white text-center py-2 px-4 rounded-lg mb-4 font-bold text-lg">
+          <div className="bg-royal-heath-50 rounded-md p-4 border border-royal-heath-200 flex flex-col">
+            <div className="bg-royal-heath-600 text-white text-center py-1 px-3 rounded-md mb-3 font-medium text-sm">
               B
             </div>
-            <div className="flex-1 min-h-[200px] overflow-y-auto">
-              <p className="text-royal-heath-800 leading-relaxed">
+            <div className="flex-1 min-h-[180px] overflow-y-auto">
+              <p className="text-royal-heath-800 leading-relaxed text-sm">
                 {currentPair[1].text}
               </p>
             </div>
@@ -183,7 +183,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
         </div>
 
         {/* Slider section */}
-        <div className="flex flex-col items-center space-y-6">
+        <div className="flex flex-col items-center space-y-4">
           <div className="w-full max-w-4xl">
             {/* Slider */}
             <div className="relative">
@@ -198,33 +198,33 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
                 onMouseUp={handleSliderMouseUp}
                 onTouchStart={handleSliderMouseDown}
                 onTouchEnd={handleSliderMouseUp}
-                className="w-full h-3 bg-royal-heath-200 rounded-lg appearance-none cursor-pointer slider"
+                className="w-full h-2 bg-royal-heath-200 rounded-md appearance-none cursor-pointer slider"
                 style={{
                   background: `linear-gradient(to right, 
-                    #ce3492 0%, 
-                    #e054b1 25%, 
-                    #f3aedf 50%, 
-                    #e054b1 75%, 
-                    #ce3492 100%)`
+                    #475569 0%, 
+                    #64748b 25%, 
+                    #94a3b8 50%, 
+                    #64748b 75%, 
+                    #475569 100%)`
                 }}
               />
               
               {/* Slider labels */}
-              <div className="flex justify-between mt-3 px-1">
-                <span className="text-xs text-royal-heath-700 text-center w-20">
-                  A a lot more {criteria}
-                </span>
+              <div className="flex justify-between mt-2 px-1">
                 <span className="text-xs text-royal-heath-700 text-center w-16">
+                  A much more {criteria}
+                </span>
+                <span className="text-xs text-royal-heath-700 text-center w-12">
                   A more {criteria}
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-20">
-                  Reasonably equal
-                </span>
                 <span className="text-xs text-royal-heath-700 text-center w-16">
+                  Equal
+                </span>
+                <span className="text-xs text-royal-heath-700 text-center w-12">
                   B more {criteria}
                 </span>
-                <span className="text-xs text-royal-heath-700 text-center w-20">
-                  B a lot more {criteria}
+                <span className="text-xs text-royal-heath-700 text-center w-16">
+                  B much more {criteria}
                 </span>
               </div>
             </div>
@@ -232,7 +232,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
 
           {/* Current selection display */}
           <div className="text-center">
-            <p className="text-lg font-semibold text-royal-heath-800">
+            <p className="text-sm font-medium text-royal-heath-800">
               {getSliderLabel(currentJudgement)}
             </p>
           </div>
@@ -240,7 +240,7 @@ export default function UserJudge({ tests, criteria, onComplete, isOpen, classNa
           {/* Next button - now optional since auto-advance is enabled */}
           <button
             onClick={handleNext}
-            className="px-8 py-3 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors font-semibold text-lg opacity-75"
+            className="px-6 py-2 bg-royal-heath-600 text-white rounded-md hover:bg-royal-heath-700 transition-colors font-medium text-sm opacity-75"
           >
             {isLastPair ? 'Complete' : 'Next Comparison'}
           </button>

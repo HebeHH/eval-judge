@@ -8,20 +8,19 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
   
-  --color-royal-heath-50: #e5f2ff;
-  --color-royal-heath-100: #cfe8ff;
-  --color-royal-heath-200: #a9d1ff;
-  --color-royal-heath-300: #75b0ff;
-  --color-royal-heath-400: #3f7dff;
-  --color-royal-heath-500: #144aff;
-  --color-royal-heath-600: #0032ff;
-  --color-royal-heath-700: #0033ff;
-  --color-royal-heath-800: #002ee3;
-  --color-royal-heath-900: #001ba3;
-  --color-royal-heath-950: #000e66;
+  --color-royal-heath-50: #f8fafc;
+  --color-royal-heath-100: #f1f5f9;
+  --color-royal-heath-200: #e2e8f0;
+  --color-royal-heath-300: #cbd5e1;
+  --color-royal-heath-400: #94a3b8;
+  --color-royal-heath-500: #64748b;
+  --color-royal-heath-600: #475569;
+  --color-royal-heath-700: #334155;
+  --color-royal-heath-800: #1e293b;
+  --color-royal-heath-900: #0f172a;
+  --color-royal-heath-950: #020617;
 
 }
 
@@ -35,29 +34,31 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Custom slider styles for UserJudge component */
 .slider::-webkit-slider-thumb {
   appearance: none;
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
-  background: #932162;
+  background: #475569;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .slider::-moz-range-thumb {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
-  background: #932162;
+  background: #475569;
   cursor: pointer;
   border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   border: none;
 }
 

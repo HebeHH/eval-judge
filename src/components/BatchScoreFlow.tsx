@@ -154,40 +154,40 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-bl from-royal-heath-200 to-royal-heath-300 py-8">
+    <div className="min-h-screen bg-gray-50 py-6">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-royal-heath-900">
+        <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
+          <div className="flex justify-between items-center mb-3">
+            <h1 className="text-lg font-medium text-royal-heath-900">
               Evaluating: {selectedPrompt.criteria}
             </h1>
             <button
               onClick={onBack}
-              className="px-4 py-2 bg-royal-heath-100 text-royal-heath-700 border border-royal-heath-300 rounded-lg hover:bg-royal-heath-200 transition-colors"
+              className="px-3 py-2 bg-royal-heath-100 text-royal-heath-700 border border-royal-heath-300 rounded-md hover:bg-royal-heath-200 transition-colors text-sm"
             >
               Back to Prompt Builder
             </button>
           </div>
-          <p className="text-royal-heath-600">
+          <p className="text-royal-heath-600 text-sm">
             Testing with {testSample.length} sample outputs using: {selectedPrompt.title}
           </p>
         </div>
 
         {/* Progress Bar */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex justify-between items-center mb-3">
-            <h2 className="text-lg font-semibold text-royal-heath-800">
+        <div className="bg-white rounded-lg shadow-sm border p-4 mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-base font-medium text-royal-heath-800">
               AI Batch Scoring Progress
             </h2>
-            <span className="text-royal-heath-600">
+            <span className="text-royal-heath-600 text-sm">
               {progress.current} / {progress.total} completed
             </span>
           </div>
           
-          <div className="w-full bg-royal-heath-200 rounded-full h-4">
+          <div className="w-full bg-royal-heath-200 rounded-full h-3">
             <div
-              className="bg-royal-heath-600 h-4 rounded-full transition-all duration-300 flex items-center justify-center"
+              className="bg-royal-heath-600 h-3 rounded-full transition-all duration-300 flex items-center justify-center"
               style={{ 
                 width: progress.total > 0 ? `${(progress.current / progress.total) * 100}%` : '0%' 
               }}
@@ -200,14 +200,14 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
             </div>
           </div>
           
-          <div className="mt-3 text-sm text-royal-heath-600">
+          <div className="mt-2 text-sm text-royal-heath-600">
             {isProcessing ? (
               <div className="flex items-center space-x-2">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-royal-heath-600"></div>
+                <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-royal-heath-600"></div>
                 <span>Processing test outputs with AI evaluation...</span>
               </div>
             ) : isBatchScoreComplete ? (
-              <span className="text-green-600 font-medium">✓ Batch scoring completed!</span>
+              <span className="text-green-600 font-medium">Batch scoring completed</span>
             ) : (
               <span>Preparing to start batch scoring...</span>
             )}
@@ -221,30 +221,30 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
             criteria={selectedPrompt.criteria}
             onComplete={handleUserJudgeComplete}
             isOpen={isUserJudgeOpen}
-            className="mb-6"
+            className="mb-4"
           />
         )}
 
         {/* Status Information */}
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-royal-heath-800 mb-4">Status</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-royal-heath-50 rounded-lg p-4">
-              <h4 className="font-medium text-royal-heath-700 mb-2">AI Batch Scoring</h4>
+        <div className="bg-white rounded-lg shadow-sm border p-4">
+          <h3 className="text-base font-medium text-royal-heath-800 mb-3">Status</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="bg-royal-heath-50 rounded-md p-3">
+              <h4 className="font-medium text-royal-heath-700 mb-1 text-sm">AI Batch Scoring</h4>
               <p className="text-sm text-royal-heath-600">
                 {isBatchScoreComplete ? 
-                  `✓ Completed - ${batchScoreResults.length} results` : 
+                  `Completed - ${batchScoreResults.length} results` : 
                   isProcessing ? 
                     `Processing... (${progress.current}/${progress.total})` : 
                     'Preparing to start...'
                 }
               </p>
             </div>
-            <div className="bg-royal-heath-50 rounded-lg p-4">
-              <h4 className="font-medium text-royal-heath-700 mb-2">Human Judgements</h4>
+            <div className="bg-royal-heath-50 rounded-md p-3">
+              <h4 className="font-medium text-royal-heath-700 mb-1 text-sm">Human Judgements</h4>
               <p className="text-sm text-royal-heath-600">
                 {isUserJudgeComplete ? 
-                  `✓ Completed - ${userTestJudgements.length} comparisons` : 
+                  `Completed - ${userTestJudgements.length} comparisons` : 
                   isUserJudgeOpen ? 
                     'Waiting for user input...' : 
                     'Closed'
@@ -254,9 +254,9 @@ export default function BatchScoreFlow({ selectedPrompt, onBack }: BatchScoreFlo
           </div>
           
           {isBatchScoreComplete && (isUserJudgeComplete || !isUserJudgeOpen) && (
-            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-800 font-medium">
-                🎉 Evaluation complete! Preparing results...
+            <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-md">
+              <p className="text-green-800 font-medium text-sm">
+                Evaluation complete. Preparing results...
               </p>
             </div>
           )}
