@@ -114,6 +114,31 @@ export default function EvalPromptBuilder() {
     }
   };
 
+  const streamEvalPrompt = async (systemPrompt: string, userMessage: string, promptIndex: number): Promise<string> => {
+    try {
+      // Call the API to get the full response
+      const fullResponse = await callLLMAPI(systemPrompt, userMessage);
+      
+      // Simulate streaming by revealing the text progressively
+      const words = fullResponse.split(' ');
+      let currentText = '';
+      
+      for (let i = 0; i < words.length; i++) {
+        currentText += (i > 0 ? ' ' : '') + words[i];
+        setStreamingEvalPrompts(prev => ({
+          ...prev,
+          [promptIndex]: currentText
+        }));
+        await new Promise(resolve => setTimeout(resolve, 30)); // Faster streaming for eval prompts
+      }
+      
+      return fullResponse;
+    } catch (error) {
+      console.error(`Error streaming eval prompt ${promptIndex}:`, error);
+      throw error;
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!currentInput.trim() || isLoading) return;
 
@@ -176,16 +201,18 @@ export default function EvalPromptBuilder() {
 
   const generateEvalPrompts = async (finalMessages: Message[]) => {
     setIsLoading(true);
+    setIsGeneratingEvals(true);
+    setStreamingEvalPrompts({});
     
     try {
       const conversationHistory = formatConversationForAgent(finalMessages);
       const evalPrompt = createEvalGeneratorPrompt(conversationHistory);
       
-      // Call all three eval generator agents in parallel
+      // Stream all three eval prompts in parallel
       const [response1, response2, response3] = await Promise.all([
-        callLLMAPI(EVAL_GENERATOR_SYSTEM_PROMPT_1, evalPrompt),
-        callLLMAPI(EVAL_GENERATOR_SYSTEM_PROMPT_2, evalPrompt),
-        callLLMAPI(EVAL_GENERATOR_SYSTEM_PROMPT_3, evalPrompt)
+        streamEvalPrompt(EVAL_GENERATOR_SYSTEM_PROMPT_1, evalPrompt, 0),
+        streamEvalPrompt(EVAL_GENERATOR_SYSTEM_PROMPT_2, evalPrompt, 1),
+        streamEvalPrompt(EVAL_GENERATOR_SYSTEM_PROMPT_3, evalPrompt, 2)
       ]);
       
       setEvalPrompts([
@@ -205,10 +232,14 @@ export default function EvalPromptBuilder() {
           approach: 'Comprehensive, systematic approach with academic rigor'
         }
       ]);
+      
+      // Clear streaming content after completion
+      setStreamingEvalPrompts({});
     } catch (error) {
       console.error('Error generating eval prompts:', error);
     } finally {
       setIsLoading(false);
+      setIsGeneratingEvals(false);
     }
   };
 
@@ -228,6 +259,8 @@ export default function EvalPromptBuilder() {
     setEvalPrompts([]);
     setStreamingContent('');
     setIsCriticizing(false);
+    setStreamingEvalPrompts({});
+    setIsGeneratingEvals(false);
   };
 
   if (phase === 'selection') {
@@ -305,31 +338,74 @@ export default function EvalPromptBuilder() {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {evalPrompts.map((prompt, index) => (
-                <div key={index} className="bg-white rounded-xl shadow-lg p-6">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold text-royal-heath-800 mb-2">
-                      {prompt.title}
-                    </h3>
-                    <p className="text-sm text-royal-heath-600 mb-4">
-                      {prompt.approach}
-                    </p>
+              {[
+                {
+                  title: 'Precision-Focused Evaluation',
+                  approach: 'Emphasizes clarity, measurability, and practical application',
+                  index: 0
+                },
+                {
+                  title: 'Holistic Assessment',
+                  approach: 'Balances multiple dimensions with contextual understanding',
+                  index: 1
+                },
+                {
+                  title: 'Research-Grade Framework',
+                  approach: 'Comprehensive, systematic approach with academic rigor',
+                  index: 2
+                }
+              ].map((promptInfo) => {
+                const finalPrompt = evalPrompts[promptInfo.index];
+                const streamingText = streamingEvalPrompts[promptInfo.index];
+                const hasContent = finalPrompt?.content || streamingText;
+                
+                return (
+                  <div key={promptInfo.index} className="bg-white rounded-xl shadow-lg p-6">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-semibold text-royal-heath-800 mb-2">
+                        {promptInfo.title}
+                      </h3>
+                      <p className="text-sm text-royal-heath-600 mb-4">
+                        {promptInfo.approach}
+                      </p>
+                    </div>
+                    
+                    <div className="bg-royal-heath-50 rounded-lg p-4 max-h-96 overflow-y-auto">
+                      {hasContent ? (
+                        <div>
+                          <pre className="whitespace-pre-wrap text-sm text-royal-heath-800 font-mono">
+                            {finalPrompt?.content || streamingText}
+                          </pre>
+                          {streamingText && !finalPrompt && (
+                            <div className="inline-block w-2 h-4 bg-royal-heath-600 animate-pulse ml-1"></div>
+                          )}
+                        </div>
+                      ) : isGeneratingEvals ? (
+                        <div className="flex items-center justify-center py-8">
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 text-royal-heath-500">
+                          Waiting to generate...
+                        </div>
+                      )}
+                    </div>
+                    
+                    {finalPrompt?.content && (
+                      <button
+                        onClick={() => navigator.clipboard.writeText(finalPrompt.content)}
+                        className="mt-4 w-full px-4 py-2 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors"
+                      >
+                        Copy to Clipboard
+                      </button>
+                    )}
                   </div>
-                  
-                  <div className="bg-royal-heath-50 rounded-lg p-4 max-h-96 overflow-y-auto">
-                    <pre className="whitespace-pre-wrap text-sm text-royal-heath-800 font-mono">
-                      {prompt.content}
-                    </pre>
-                  </div>
-                  
-                  <button
-                    onClick={() => navigator.clipboard.writeText(prompt.content)}
-                    className="mt-4 w-full px-4 py-2 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors"
-                  >
-                    Copy to Clipboard
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
