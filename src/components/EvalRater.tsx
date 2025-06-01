@@ -89,7 +89,7 @@ const AnalysisMethodologySidebar = ({
 
         <div className="space-y-4 mb-8">
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
-            DeepAtuin analyzes correlation between AI and human judgments to
+            EvalAtuin analyzes correlation between AI and human judgments to
             validate your evaluation prompt&apos;s effectiveness.
           </p>
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
@@ -158,7 +158,7 @@ const AnalysisMethodologySidebar = ({
 
         <div className="p-6 bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-sm">
           <h4 className="text-caption text-charcoal-600 dark:text-charcoal-400 mb-3">
-            DEEPATUIN SYSTEM
+            EvalAtuin SYSTEM
           </h4>
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
             This analysis reveals whether your evaluation prompt actually
@@ -286,7 +286,7 @@ export default function EvalRater({
   const handleCopyStats = async () => {
     if (!summaryStats) return;
 
-    const statsText = `DeepAtuin Evaluation Analysis:
+    const statsText = `EvalAtuin Evaluation Analysis:
 - Total comparisons: ${summaryStats.count}
 - Mean absolute difference: ${summaryStats.meanAbsoluteDifference}
 - User judgement mean: ${summaryStats.userMean}
@@ -321,7 +321,7 @@ Approach: ${selectedPrompt.approach}`;
           <div className="max-w-6xl mx-auto">
             <div className="card-elevated p-6 sm:p-8 lg:p-12">
               <h1 className="text-display text-charcoal-800 dark:text-charcoal-50 mb-6 sm:mb-8 text-center fade-in">
-                DeepAtuin Analysis
+                EvalAtuin Analysis
               </h1>
 
               {/* Selected Prompt Info */}

@@ -50,7 +50,7 @@ const METHODOLOGY_CONTENT = {
   selection: {
     title: "Evaluation Criteria Selection",
     content: [
-      "DeepAtuin employs a systematic approach to LLM evaluation prompt development.",
+      "EvalAtuin employs a systematic approach to LLM evaluation prompt development.",
       "First, select your primary evaluation dimension. Each criterion represents a distinct area of assessment:",
       "• WITTY: Systematic evaluation of humor, cleverness, and linguistic creativity",
       "• INTELLIGENT: Analysis of reasoning capabilities and knowledge application",
@@ -61,7 +61,7 @@ const METHODOLOGY_CONTENT = {
   conversation: {
     title: "Information Gathering Process",
     content: [
-      "DeepAtuin uses a multi-agent conversation system to extract comprehensive evaluation requirements:",
+      "EvalAtuin uses a multi-agent conversation system to extract comprehensive evaluation requirements:",
       "🔍 Critical Agent: Analyzes your responses and identifies missing information, unclear aspects, and contradictory requirements",
       "❓ Questioning Agent: Transforms the analysis into engaging, prioritized questions for you",
       "This iterative process ensures your evaluation criteria are comprehensive and unambiguous before prompt generation begins.",
@@ -83,7 +83,7 @@ const METHODOLOGY_CONTENT = {
   evaluation: {
     title: "Dual Validation Process",
     content: [
-      "DeepAtuin validates evaluation prompts through parallel processes:",
+      "EvalAtuin validates evaluation prompts through parallel processes:",
       "🤖 AI Evaluation Stream: Your selected prompt scores test outputs (absolute 0-10 scores)",
       "👤 Human Validation Stream: You perform pairwise comparisons (relative -1 to 1 scores)",
       "This dual approach leverages the strengths of both AI consistency and human intuition.",
@@ -270,7 +270,7 @@ const MethodologySidebar = ({
 
         <div className="mt-12 p-6 bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-sm">
           <h4 className="text-caption text-charcoal-600 dark:text-charcoal-400 mb-3">
-            DEEPATUIN SYSTEM
+            EvalAtuin SYSTEM
           </h4>
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
             An interactive system for building and validating LLM evaluation
@@ -602,7 +602,7 @@ export default function EvalPromptBuilder() {
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-8 sm:mb-12 lg:mb-16">
                 <h1 className="text-display text-charcoal-800 dark:text-charcoal-50 mb-4 sm:mb-6">
-                  DeepAtuin
+                  EvalAtuin
                 </h1>
                 <p className="text-body-large text-charcoal-600 dark:text-charcoal-300 max-w-2xl mx-auto px-4">
                   An interactive system for building and validating LLM
@@ -833,7 +833,7 @@ export default function EvalPromptBuilder() {
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                   <div className="flex-1">
                     <h1 className="text-heading-2 mb-2">
-                      DeepAtuin: {selectedCriteria}
+                      EvalAtuin: {selectedCriteria}
                     </h1>
                     <p className="text-body-small text-charcoal-200">
                       Conversation {currentLoop + 1} of {MAX_LOOPS + 1} ·

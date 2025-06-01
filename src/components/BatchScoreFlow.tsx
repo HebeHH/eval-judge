@@ -83,7 +83,7 @@ const EvaluationMethodologySidebar = ({
 
         <div className="space-y-4 mb-8">
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
-            DeepAtuin validates evaluation prompts through parallel processes
+            EvalAtuin validates evaluation prompts through parallel processes
             that leverage both AI consistency and human intuition.
           </p>
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
@@ -174,7 +174,7 @@ const EvaluationMethodologySidebar = ({
 
         <div className="p-6 bg-charcoal-50 dark:bg-charcoal-800 border border-charcoal-200 dark:border-charcoal-700 rounded-sm">
           <h4 className="text-caption text-charcoal-600 dark:text-charcoal-400 mb-3">
-            DEEPATUIN SYSTEM
+            EvalAtuin SYSTEM
           </h4>
           <p className="text-body-small text-charcoal-600 dark:text-charcoal-300 leading-relaxed">
             This dual validation approach ensures your LLM evaluation prompts
@@ -335,7 +335,7 @@ export default function BatchScoreFlow({
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 mb-4">
                 <div className="flex-1">
                   <h1 className="text-heading-1 text-charcoal-800 dark:text-charcoal-50 mb-2">
-                    DeepAtuin Validation
+                    EvalAtuin Validation
                   </h1>
                   <p className="text-body text-charcoal-600 dark:text-charcoal-300">
                     Testing <em>{selectedPrompt.title}</em> methodology for{" "}

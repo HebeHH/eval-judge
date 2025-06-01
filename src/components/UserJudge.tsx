@@ -152,7 +152,7 @@ export default function UserJudge({
       <div className="bg-charcoal-800 dark:bg-charcoal-900 text-charcoal-50 p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4">
           <div className="flex-1">
-            <h2 className="text-heading-3 mb-2">DeepAtuin Human Validation</h2>
+            <h2 className="text-heading-3 mb-2">EvalAtuin Human Validation</h2>
             <p className="text-body-small text-charcoal-200 dark:text-charcoal-300">
               Compare response quality for{" "}
               <strong>{criteria.toLowerCase()}</strong> evaluation
