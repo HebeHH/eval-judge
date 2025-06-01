@@ -13,6 +13,7 @@ import {
   createQuestionerPrompt,
   createEvalGeneratorPrompt
 } from '@/constants/prompts';
+import BatchScoreFlow from './BatchScoreFlow';
 
 type EvaluationCriteria = 'WITTY' | 'INTELLIGENT' | 'KIND';
 
@@ -28,6 +29,13 @@ interface EvalPrompt {
   approach: string;
 }
 
+interface SelectedPrompt {
+  title: string;
+  content: string;
+  approach: string;
+  criteria: string;
+}
+
 const MAX_LOOPS = 3;
 
 export default function EvalPromptBuilder() {
@@ -38,11 +46,12 @@ export default function EvalPromptBuilder() {
   const [isStreaming, setIsStreaming] = useState(false);
   const [isCriticizing, setIsCriticizing] = useState(false);
   const [currentLoop, setCurrentLoop] = useState(0);
-  const [phase, setPhase] = useState<'selection' | 'conversation' | 'generation'>('selection');
+  const [phase, setPhase] = useState<'selection' | 'conversation' | 'generation' | 'evaluation'>('selection');
   const [evalPrompts, setEvalPrompts] = useState<EvalPrompt[]>([]);
   const [streamingContent, setStreamingContent] = useState('');
   const [streamingEvalPrompts, setStreamingEvalPrompts] = useState<{[key: number]: string}>({});
   const [isGeneratingEvals, setIsGeneratingEvals] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState<SelectedPrompt | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -66,6 +75,23 @@ export default function EvalPromptBuilder() {
       content: defaultQuestion,
       timestamp: new Date()
     }]);
+  };
+
+  const handlePromptSelection = (promptInfo: { title: string; approach: string; index: number }, finalPrompt: EvalPrompt) => {
+    const selected: SelectedPrompt = {
+      title: promptInfo.title,
+      approach: promptInfo.approach,
+      content: finalPrompt.content,
+      criteria: selectedCriteria || 'UNKNOWN'
+    };
+    
+    setSelectedPrompt(selected);
+    setPhase('evaluation');
+  };
+
+  const handleBackToBuilder = () => {
+    setSelectedPrompt(null);
+    setPhase('generation');
   };
 
   const callLLMAPI = async (systemPrompt: string, userMessage: string): Promise<string> => {
@@ -254,13 +280,16 @@ export default function EvalPromptBuilder() {
     setSelectedCriteria(null);
     setMessages([]);
     setCurrentInput('');
+    setIsLoading(false);
+    setIsStreaming(false);
+    setIsCriticizing(false);
     setCurrentLoop(0);
     setPhase('selection');
     setEvalPrompts([]);
     setStreamingContent('');
-    setIsCriticizing(false);
     setStreamingEvalPrompts({});
     setIsGeneratingEvals(false);
+    setSelectedPrompt(null);
   };
 
   if (phase === 'selection') {
@@ -399,14 +428,7 @@ export default function EvalPromptBuilder() {
                       <div className="flex gap-3 flex-shrink-0">
                         <button
                           onClick={() => {
-                            // TODO: Hook up to evaluation system
-                            console.log('Selected evaluation prompt:', {
-                              title: promptInfo.title,
-                              approach: promptInfo.approach,
-                              content: finalPrompt.content,
-                              criteria: selectedCriteria,
-                              index: promptInfo.index
-                            });
+                            handlePromptSelection(promptInfo, finalPrompt);
                           }}
                           className="flex-1 px-6 py-3 bg-royal-heath-600 text-white rounded-lg hover:bg-royal-heath-700 transition-colors font-semibold"
                         >
@@ -427,6 +449,15 @@ export default function EvalPromptBuilder() {
           )}
         </div>
       </div>
+    );
+  }
+
+  if (phase === 'evaluation') {
+    return (
+      <BatchScoreFlow
+        selectedPrompt={selectedPrompt!}
+        onBack={handleBackToBuilder}
+      />
     );
   }
 

@@ -11,7 +11,7 @@ const sampleTests = [
   },
   {
     id: 2,
-    text: "To be or not to be, that is the question. Whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune."
+    text: "To be or not to be, that is the question. Whether &apos;tis nobler in the mind to suffer the slings and arrows of outrageous fortune."
   },
   {
     id: 3,
@@ -139,7 +139,7 @@ export default function TestUserJudgePage() {
                   </svg>
                 </div>
                 <p className="text-royal-heath-600">
-                  Click "Start Human Judging" to begin comparing test pairs
+                  Click &quot;Start Human Judging&quot; to begin comparing test pairs
                 </p>
               </div>
             )}
@@ -179,7 +179,7 @@ export default function TestUserJudgePage() {
                   <div className="text-center text-royal-heath-600">
                     <p>No AI evaluation running</p>
                     <p className="text-sm text-royal-heath-500 mt-1">
-                      Click "Simulate AI Evaluation" to start
+                      Click &quot;Simulate AI Evaluation&quot; to start
                     </p>
                   </div>
                 )}
