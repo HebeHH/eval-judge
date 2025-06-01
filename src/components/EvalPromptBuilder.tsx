@@ -363,12 +363,7 @@ export default function EvalPromptBuilder() {
 
           {isLoading ? (
             <div className="text-center py-12">
-              <div className="flex justify-center mb-4">
-                <div className="loader" style={{
-                  boxShadow: '0 3px 0 #7c3aed',
-                  filter: 'hue-rotate(280deg) saturate(1.2)'
-                }}></div>
-              </div>
+              <div className="loader mx-auto mb-4"></div>
               <p className="text-royal-heath-700">Generating your evaluation prompts...</p>
             </div>
           ) : (
@@ -417,10 +412,11 @@ export default function EvalPromptBuilder() {
                         </div>
                       ) : isGeneratingEvals ? (
                         <div className="flex items-center justify-center h-full">
-                          <div className="loader" style={{
-                            boxShadow: '0 3px 0 #7c3aed',
-                            filter: 'hue-rotate(280deg) saturate(1.2)'
-                          }}></div>
+                          <div className="flex space-x-1">
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce"></div>
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                            <div className="w-3 h-3 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          </div>
                         </div>
                       ) : (
                         <div className="text-center h-full flex items-center justify-center text-royal-heath-500 text-lg">
@@ -537,12 +533,12 @@ export default function EvalPromptBuilder() {
             {isCriticizing && (
               <div className="flex justify-start">
                 <div className="max-w-3xl p-4 rounded-lg bg-royal-heath-100 text-royal-heath-800">
-                  <div className="flex items-center space-x-3">
-                    <div className="loader" style={{
-                      boxShadow: '0 3px 0 #7c3aed',
-                      filter: 'hue-rotate(280deg) saturate(1.2)',
-                      transform: 'scale(0.7)'
-                    }}></div>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                      <div className="w-2 h-2 bg-royal-heath-600 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    </div>
                     <span>Analyzing conversation...</span>
                   </div>
                 </div>
@@ -552,12 +548,8 @@ export default function EvalPromptBuilder() {
             {isLoading && !isStreaming && !isCriticizing && (
               <div className="flex justify-start">
                 <div className="max-w-3xl p-4 rounded-lg bg-royal-heath-100 text-royal-heath-800">
-                  <div className="flex items-center space-x-3">
-                    <div className="loader" style={{
-                      boxShadow: '0 3px 0 #7c3aed',
-                      filter: 'hue-rotate(280deg) saturate(1.2)',
-                      transform: 'scale(0.7)'
-                    }}></div>
+                  <div className="flex items-center space-x-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-royal-heath-600"></div>
                     <span>Thinking...</span>
                   </div>
                 </div>
