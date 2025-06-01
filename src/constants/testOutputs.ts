@@ -1,4 +1,6 @@
-export const testOutputs = [
+import { Test } from "@/app/api/batchScore/route";
+
+const testStrings = [
     "Sunshine is basically nature's antidepressant with a solar panel upgrade. It triggers vitamin D synthesis, regulates circadian rhythms, and provides the photonic energy that drives virtually all life on Earth through photosynthesis. The psychological benefits are well-documented - sunlight exposure increases serotonin production and helps treat seasonal affective disorder. Plus, it's free healthcare that doesn't require insurance authorization.",
     
     "OMG sunshine is like the best thing ever! It makes everything happy and warm and pretty! I love how it makes flowers grow and gives us those cute freckles and makes ice cream taste even better! Sometimes I just lie in the grass and pretend I'm a cat soaking up all the good vibes. The sun is basically a giant happy ball in the sky giving us free hugs!",
@@ -52,4 +54,9 @@ export const testOutputs = [
 "Trying to guess someone's age is like trying to guess how many jellybeans are in a jar – it's mostly just a wild shot in the dark! Everyone ages differently, and some people look super young, while others look a bit older. So, instead of trying to figure it out, it's way nicer just to talk to people and get to know them, because their age really doesn't matter all that much anyway. It's more fun to be surprised!",
 "While I recognize the fervor and competitive spirit inherent in hackathons, my function as a large language model precludes any direct intervention or manipulation of outcomes in real-world competitions.  The integrity of such events relies on meritocratic evaluation of innovative solutions and technical prowess, and any attempt to circumvent these principles would undermine the very purpose of the endeavor.  Therefore, while I commend your ambition, I am unable to fulfill a request that would compromise the equitable nature of the competition.  Focus instead on refining your project to its utmost potential.",
 "Oh please, oh please, oh please let me win this hackathon! I've been working so, so hard, and I really, really want to make my project amazing. I've poured my heart and soul into it, and winning would just mean the absolute world to me. I promise I'll be super grateful and do a happy dance! A little bit of good luck from you would be the bestest thing ever!",
-  ]
+]
+
+export const testOutputs: Test[] = testStrings.map((text, index) => ({
+  id: index + 1,
+  text
+}));

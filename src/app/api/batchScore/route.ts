@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { promptGeneric, scorer, formJudgementPrompt, formatTest } from '@/lib/llm';
 
-interface Test {
+export interface Test {
   id: number;
   text: string;
+}
+
+export interface UserTestJudgement {
+  testAid: number;
+  testBid: number;
+  judgement: number;
 }
 
 interface BatchScoreRequest {
