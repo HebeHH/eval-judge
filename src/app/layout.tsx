@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   title: "EvalAtuin | Research-Grade Prompt Engineering",
   description:
     "A sophisticated evaluation system for AI responses using advanced prompt engineering methodology and academic rigor.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
