@@ -43,7 +43,7 @@ interface CriticResponse {
   timestamp: Date;
 }
 
-const MAX_LOOPS = 2;
+const MAX_LOOPS = 3;
 
 // Methodology content for different phases
 const METHODOLOGY_CONTENT = {
