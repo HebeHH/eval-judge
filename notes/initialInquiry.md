@@ -16,26 +16,23 @@ There are three LLM agents involved in this:
 These agents are each associated with a `system` prompt, which you'll need to create accordingly. They are used through the `/prompt` api endpoint available, as described in `notes/INTERFACES.md`.
 
 ### Criticizer agent
-The criticizer's job is to look at the existing conversation, and work out what information is still needed in order to produce a good evaluation prompt. It takes in the conversational history between the user and the questioner agent, although this should be modified so the criticizer doens't think it's part of the conversation. Format it as a single user prompt with the conversational history in xml tags instead. it doens't take in any previous criticizer agent prompts.
+The criticizer's job is to look at the existing conversation, and work out what information is still needed in order to produce a good evaluation prompt. It takes in the conversational history between the user and the questioner agent.  it doens't take in any previous criticizer agent prompts.
 
-The criticizer agent should return a criticism of what's unclear, what's contradictory, and what additional info is crucial to build an eval prompt. It should be direct, thorough, and critical. It doesn't need to be nice, it's not talking directly to the user.
-Read `notes/EvalsGuide.md` carefully to understand what a good eval should have. This document should inform the way the criticizer agent behaves. 
+Write a very basic system prompt for this. We will improve it later. Please do make sure to structure the messages nicely though: Format it as a single user prompt with the user's conversational history in xml tags. 
 
 ### Questioner agent
-The questioner is responsible for transforming the critical thoughts into actual questions for the user.
-It takes in the conversational history and the MOST RECENT criticizer response ONLY. Again, this needs to be formatted to make sure it matches the message structure openai requires (aka can't have two 'user' prompts in a row).
+The questioner is responsible for transforming the critical thoughts into actual questions for the user.It transforms the crticism into actionable questions, prioritizing the most important ones, and not overwhelming the user.
 
-It transforms the crticism into actionable questions, prioritizing the most important ones, and not overwhelming the user. It can provide examples or suggestions. It's goal is to structure this in the way that's most likely to get the most important information from the user.
+Write a very basic system prompt, we'll improve it later. Again, plese do make sure to structure the *messages* nicely as a single user prompt, including the user conversational history and then the most recent criticizer response in xml tags. At the end, ask something like "generate questions for the user based on <CRITICISM>" or the like.
+
 
 ### Eval generator agent(s)
-The eval generator(s) takes in the user's conversation and outputs an eval prompt. 
+We'll have three different eval generator agents.
 
-There should be 3 different eval generator agents available.take guidance on what an eval prompt looks like from `notes/EvalsGuide.md` and search the web. Use this guidance to create 3 different forms of eval generator system prompt. The way the conversational history is modified for the message can be the same between the 3 eval generator agents, and should NOT include the criticizer responses.
+Again, structure the conversation history as a single user message with xml tags, including only the user and questioner parts of the conversation. Use the same structure for all 3 eval generator agents. Add a prompt to generate an evaluation prompt at the end.
 
-IMPORTANT NOTE: the eval prompts outputed need to:
-* ask for a score 0-10
-* ask for thoughts/reasoning, not structured output
-* so basically they need to prompt a response that thinks and justifies what score 0-10 should be given for the testresponse, given the criteria as defined by the user in conversation
+Then create 3 different system prompts for the 3 agents - again, these can be basic. The resultant Eval Prompts should ask for thoughts about where input data should be scored between 0-10 (structured output not required, we want thoughts, but thoughts on what score 0-10).
+
 
 
 ## UI Flow
