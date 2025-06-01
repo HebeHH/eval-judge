@@ -11,20 +11,17 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   
-  --color-royal-heath-50: #ebecff;
-  --color-royal-heath-100: #dbdbff;
-  --color-royal-heath-200: #bfbeff;
-  --color-royal-heath-300: #9d97ff;
-  --color-royal-heath-400: #836dff;
-  --color-royal-heath-500: #754bff;
-  --color-royal-heath-600: #6d2cff;
-  --color-royal-heath-700: #5f20e2;
-  --color-royal-heath-800: #4d1db6;
-  --color-royal-heath-900: #40208f;
-  --color-royal-heath-950: #23114a;
-
-
-
+  --color-royal-heath-50: #e5f2ff;
+  --color-royal-heath-100: #cfe8ff;
+  --color-royal-heath-200: #a9d1ff;
+  --color-royal-heath-300: #75b0ff;
+  --color-royal-heath-400: #3f7dff;
+  --color-royal-heath-500: #144aff;
+  --color-royal-heath-600: #0032ff;
+  --color-royal-heath-700: #0033ff;
+  --color-royal-heath-800: #002ee3;
+  --color-royal-heath-900: #001ba3;
+  --color-royal-heath-950: #000e66;
 
 }
 
