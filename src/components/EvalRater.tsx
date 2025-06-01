@@ -142,7 +142,7 @@ Approach: ${selectedPrompt.approach}`;
       <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="bg-white rounded-lg border border-gray-200 p-8" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
           <h1 className="text-3xl font-bold text-center mb-6" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810' }}>
-            Evaluation Results Comparison
+            EvalAtuin Results Comparison
           </h1>
           
           {/* Selected Prompt Info */}

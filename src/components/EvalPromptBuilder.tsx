@@ -294,7 +294,7 @@ export default function EvalPromptBuilder() {
         <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'var(--font-playfair)', color: '#2c1810', letterSpacing: '-0.02em' }}>
-              Evaluation Prompt Builder
+              EvalAtuin
             </h1>
             <p className="text-lg leading-relaxed" style={{ fontFamily: 'var(--font-crimson)', color: '#5a4a3a', maxWidth: '600px', margin: '0 auto' }}>
               Create comprehensive evaluation prompts with the precision of a literary critic and the insight of a seasoned editor
